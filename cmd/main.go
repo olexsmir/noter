@@ -12,6 +12,7 @@ import (
 	"github.com/Smirnov-O/noter/internal/config"
 	"github.com/Smirnov-O/noter/internal/server"
 	"github.com/Smirnov-O/noter/pkg/database"
+	"github.com/Smirnov-O/noter/pkg/hash"
 	"github.com/Smirnov-O/noter/pkg/logger"
 )
 
@@ -32,6 +33,8 @@ func main() {
 	if err != nil {
 		logger.Error(err)
 	}
+
+	_ = hash.NewSHA1Hasher(cfg.Auth.PasswordSalt)
 
 	// Server
 	srv := server.NewServer(cfg, nil)
