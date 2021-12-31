@@ -1,0 +1,13 @@
+http:
+  port: 80
+  maxHeaderBytes: 1
+  readTimeout: 10s
+  writeTimeout: 10s
+
+postgres:
+  dbname: test_db
+  sslmode: disable
+
+jwt:
+  accessTokenTTL: 15m
+  refreshTokenTTL: 24h
