@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:14
+    container_name: noter_postgres
+    environment:
+      POSTGRES_DB: "noter"
+      POSTGRES_PASSWORD: "qwerty"
+    volumes:
+      - /var/lib/postgresql/data
+    ports:
+      - 5432:5432
