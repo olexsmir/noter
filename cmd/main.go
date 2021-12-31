@@ -12,12 +12,13 @@ import (
 	"github.com/Smirnov-O/noter/internal/config"
 	"github.com/Smirnov-O/noter/internal/server"
 	"github.com/Smirnov-O/noter/pkg/database"
+	"github.com/Smirnov-O/noter/pkg/logger"
 )
 
 func main() {
 	cfg, err := config.New("configs")
 	if err != nil {
-		panic(err)
+		logger.Error(err)
 	}
 
 	db, err := database.NewConnection(database.ConnInfo{
@@ -29,14 +30,14 @@ func main() {
 		SSLMode:  cfg.Postgres.SSLMode,
 	})
 	if err != nil {
-		panic(err)
+		logger.Error(err)
 	}
 
 	// Server
 	srv := server.NewServer(cfg, nil)
 	go func() {
 		if err := srv.Start(); !errors.Is(err, http.ErrServerClosed) {
-			panic(err)
+			logger.Error(err)
 		}
 	}()
 
@@ -49,10 +50,10 @@ func main() {
 	defer shutdown()
 
 	if err := srv.Stop(ctx); err != nil {
-		panic(err)
+		logger.Error(err)
 	}
 
 	if err := db.Close(); err != nil {
-		panic(err)
+		logger.Error(err)
 	}
 }
