@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
+	"github.com/lib/pq"
 	_ "github.com/lib/pq"
 )
 
@@ -29,4 +30,12 @@ func NewConnection(info ConnInfo) (*sqlx.DB, error) {
 	}
 
 	return db, nil
+}
+
+func IsDuplicate(err error) bool {
+	if pgerr, ok := err.(*pq.Error); ok {
+		return pgerr.Code == "23505"
+	}
+
+	return false
 }

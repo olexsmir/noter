@@ -18,3 +18,9 @@ type User struct {
 	RegistredAt time.Time `json:"registred_at" db:"registred_at"`
 	LastVisitAt time.Time `json:"last_visit_at" db:"last_visit_at"`
 }
+
+type UserSignUp struct {
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
