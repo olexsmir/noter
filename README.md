@@ -19,3 +19,7 @@ JWT_SIGNING_KEY="random string"
 ### Make targets
 - `run` - Build and start project
 - `build` - Only build project
+- `migrate.new name=migrateName` - Create new migration
+- `migrate.up` - Setup migrations
+- `migrate.down` - Remove last migration
+- `mifrate.drop` - Remove all migrations
