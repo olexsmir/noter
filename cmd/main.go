@@ -17,6 +17,7 @@ import (
 	"github.com/Smirnov-O/noter/pkg/database"
 	"github.com/Smirnov-O/noter/pkg/hash"
 	"github.com/Smirnov-O/noter/pkg/logger"
+	"github.com/Smirnov-O/noter/pkg/token"
 )
 
 func main() {
@@ -38,6 +39,10 @@ func main() {
 	}
 
 	hasher := hash.NewSHA1Hasher(cfg.Auth.PasswordSalt)
+	_, err = token.NewManager(cfg.Auth.JWT.SigningKey)
+	if err != nil {
+		logger.Error(err)
+	}
 
 	repos := repository.NewRepositorys(db)
 	services := service.NewServices(repos, hasher)
