@@ -11,6 +11,7 @@ import (
 type Users interface {
 	SignUp(user domain.UserSignUp) error
 	SignIn(input domain.UserSignIn) (domain.Tokens, error)
+	RefreshTokens(refreshToken string) (domain.Tokens, error)
 }
 
 type Services struct {

@@ -66,6 +66,15 @@ func (s *UsersService) SignIn(input domain.UserSignIn) (domain.Tokens, error) {
 	return s.createSession(user.ID)
 }
 
+func (s *UsersService) RefreshTokens(refreshToken string) (domain.Tokens, error) {
+	user, err := s.repo.GetByRefreshToken(refreshToken)
+	if err != nil {
+		return domain.Tokens{}, err
+	}
+
+	return s.createSession(user.ID)
+}
+
 func (s *UsersService) createSession(userID int) (domain.Tokens, error) {
 	var (
 		tokens domain.Tokens

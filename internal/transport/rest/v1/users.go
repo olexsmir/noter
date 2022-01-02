@@ -13,6 +13,7 @@ func (h *Handler) initUsersRoutes(api *gin.RouterGroup) {
 	{
 		user.POST("/sign-up", h.userSignUp)
 		user.POST("/sign-in", h.userSignIn)
+    user.POST("/refresh-tokens", h.userRefreshTokens)
 	}
 }
 
@@ -64,6 +65,34 @@ func (h *Handler) userSignIn(c *gin.Context) {
 	})
 	if err != nil {
 		if errors.Is(err, domain.ErrUserNotFound) {
+			newResponse(c, http.StatusBadRequest, err.Error())
+			return
+		}
+
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, domain.Tokens{
+		Access:  tokens.Access,
+		Refresh: tokens.Refresh,
+	})
+}
+
+type userRefreshTokensInput struct {
+	RefreshToken string `json:"refresh_token" binding:"required"`
+}
+
+func (h *Handler) userRefreshTokens(c *gin.Context) {
+	var inp userRefreshTokensInput
+	if err := c.BindJSON(&inp); err != nil {
+		newResponse(c, http.StatusBadRequest, "invalid input body")
+		return
+	}
+
+	tokens, err := h.services.User.RefreshTokens(inp.RefreshToken)
+	if err != nil {
+		if errors.Is(err, domain.ErrSessionNotFound) {
 			newResponse(c, http.StatusBadRequest, err.Error())
 			return
 		}

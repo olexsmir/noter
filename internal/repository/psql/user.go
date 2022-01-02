@@ -37,6 +37,17 @@ func (r *UsersRepo) GetByCredentials(email, password string) (domain.User, error
 	return user, err
 }
 
+func (r *UsersRepo) GetByRefreshToken(refreshToken string) (domain.User, error) {
+	var user domain.User
+	err := r.db.Get(&user, "SELECT * FROM users WHERE id IN (SELECT user_id FROM sessions WHERE refresh_token = $1)", refreshToken)
+
+	if errors.Is(err, sql.ErrNoRows) {
+		return domain.User{}, domain.ErrSessionNotFound
+	}
+
+	return user, err
+}
+
 func (r *UsersRepo) SetSession(session domain.Session) error {
 	_, err := r.db.Exec("INSERT INTO sessions (user_id, refresh_token, expires_at) VALUES ($1, $2, $3) ON CONFLICT (user_id) DO UPDATE SET refresh_token = $2",
 		session.UserID, session.RefreshToken, session.ExpiresAt)
