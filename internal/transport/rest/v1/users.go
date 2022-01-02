@@ -12,6 +12,7 @@ func (h *Handler) initUsersRoutes(api *gin.RouterGroup) {
 	user := api.Group("/auth")
 	{
 		user.POST("/sign-up", h.userSignUp)
+		user.POST("/sign-in", h.userSignIn)
 	}
 }
 
@@ -43,4 +44,36 @@ func (h *Handler) userSignUp(c *gin.Context) {
 	}
 
 	c.Status(http.StatusCreated)
+}
+
+type userSignInInput struct {
+	Email    string `json:"email" binding:"required,email,max=64"`
+	Password string `json:"password" binding:"required,min=8,max=64"`
+}
+
+func (h *Handler) userSignIn(c *gin.Context) {
+	var inp userSignInInput
+	if err := c.BindJSON(&inp); err != nil {
+		newResponse(c, http.StatusBadRequest, "invalid input body")
+		return
+	}
+
+	tokens, err := h.services.User.SignIn(domain.UserSignIn{
+		Email:    inp.Email,
+		Password: inp.Password,
+	})
+	if err != nil {
+		if errors.Is(err, domain.ErrUserNotFound) {
+			newResponse(c, http.StatusBadRequest, err.Error())
+			return
+		}
+
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, domain.Tokens{
+		Access:  tokens.Access,
+		Refresh: tokens.Refresh,
+	})
 }

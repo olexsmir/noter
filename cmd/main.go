@@ -39,13 +39,13 @@ func main() {
 	}
 
 	hasher := hash.NewSHA1Hasher(cfg.Auth.PasswordSalt)
-	_, err = token.NewManager(cfg.Auth.JWT.SigningKey)
+  tokenManager, err := token.NewManager(cfg.Auth.JWT.SigningKey)
 	if err != nil {
 		logger.Error(err)
 	}
 
 	repos := repository.NewRepositorys(db)
-	services := service.NewServices(repos, hasher)
+	services := service.NewServices(repos, hasher, tokenManager, cfg)
 	handlers := rest.NewHandler(services)
 
 	// Server

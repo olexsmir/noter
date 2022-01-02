@@ -8,6 +8,8 @@ import (
 
 type Users interface {
 	Create(user domain.User) error
+	GetByCredentials(email, password string) (domain.User, error)
+	SetSession(session domain.Session) error
 }
 
 type Repositorys struct {
