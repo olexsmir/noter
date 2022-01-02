@@ -2,16 +2,19 @@ package v1
 
 import (
 	"github.com/Smirnov-O/noter/internal/service"
+	"github.com/Smirnov-O/noter/pkg/token"
 	"github.com/gin-gonic/gin"
 )
 
 type Handler struct {
-	services *service.Services
+	services     *service.Services
+	tokenManager token.TokenManager
 }
 
-func NewHandler(services *service.Services) *Handler {
+func NewHandler(services *service.Services, tokenManager token.TokenManager) *Handler {
 	return &Handler{
-		services: services,
+		services:     services,
+		tokenManager: tokenManager,
 	}
 }
 

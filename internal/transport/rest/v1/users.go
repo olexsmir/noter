@@ -13,7 +13,7 @@ func (h *Handler) initUsersRoutes(api *gin.RouterGroup) {
 	{
 		user.POST("/sign-up", h.userSignUp)
 		user.POST("/sign-in", h.userSignIn)
-    user.POST("/refresh-tokens", h.userRefreshTokens)
+		user.POST("/refresh-tokens", h.userRefreshTokens)
 	}
 }
 

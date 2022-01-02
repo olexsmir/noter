@@ -46,7 +46,7 @@ func main() {
 
 	repos := repository.NewRepositorys(db)
 	services := service.NewServices(repos, hasher, tokenManager, cfg)
-	handlers := rest.NewHandler(services)
+	handlers := rest.NewHandler(services, tokenManager)
 
 	// Server
 	srv := server.NewServer(cfg, handlers.InitRoutes())
