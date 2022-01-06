@@ -10,9 +10,14 @@ import (
 	"time"
 
 	"github.com/Smirnov-O/noter/internal/config"
+	"github.com/Smirnov-O/noter/internal/repository"
 	"github.com/Smirnov-O/noter/internal/server"
+	"github.com/Smirnov-O/noter/internal/service"
+	"github.com/Smirnov-O/noter/internal/transport/rest"
 	"github.com/Smirnov-O/noter/pkg/database"
+	"github.com/Smirnov-O/noter/pkg/hash"
 	"github.com/Smirnov-O/noter/pkg/logger"
+	"github.com/Smirnov-O/noter/pkg/token"
 )
 
 func main() {
@@ -33,8 +38,18 @@ func main() {
 		logger.Error(err)
 	}
 
+	hasher := hash.NewSHA1Hasher(cfg.Auth.PasswordSalt)
+  tokenManager, err := token.NewManager(cfg.Auth.JWT.SigningKey)
+	if err != nil {
+		logger.Error(err)
+	}
+
+	repos := repository.NewRepositorys(db)
+	services := service.NewServices(repos, hasher, tokenManager, cfg)
+	handlers := rest.NewHandler(services, tokenManager)
+
 	// Server
-	srv := server.NewServer(cfg, nil)
+	srv := server.NewServer(cfg, handlers.InitRoutes())
 	go func() {
 		if err := srv.Start(); !errors.Is(err, http.ErrServerClosed) {
 			logger.Error(err)

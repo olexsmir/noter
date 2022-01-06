@@ -1,8 +1,7 @@
-package rest
+package v1
 
 import (
 	"github.com/Smirnov-O/noter/internal/service"
-	v1 "github.com/Smirnov-O/noter/internal/transport/rest/v1"
 	"github.com/Smirnov-O/noter/pkg/token"
 	"github.com/gin-gonic/gin"
 )
@@ -19,22 +18,9 @@ func NewHandler(services *service.Services, tokenManager token.TokenManager) *Ha
 	}
 }
 
-func (h *Handler) InitRoutes() *gin.Engine {
-	r := gin.Default()
-	r.Use(
-		gin.Recovery(),
-		gin.Logger(),
-	)
-
-	h.initApi(r)
-
-	return r
-}
-
-func (h *Handler) initApi(r *gin.Engine) {
-	handlersV1 := v1.NewHandler(h.services, h.tokenManager)
-	api := r.Group("/api")
+func (h *Handler) Init(api *gin.RouterGroup) {
+	v1 := api.Group("/v1")
 	{
-		handlersV1.Init(api)
+		h.initUsersRoutes(v1)
 	}
 }
