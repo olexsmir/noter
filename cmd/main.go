@@ -39,7 +39,7 @@ func main() {
 	}
 
 	hasher := hash.NewSHA1Hasher(cfg.Auth.PasswordSalt)
-  tokenManager, err := token.NewManager(cfg.Auth.JWT.SigningKey)
+	tokenManager, err := token.NewManager(cfg.Auth.JWT.SigningKey)
 	if err != nil {
 		logger.Error(err)
 	}

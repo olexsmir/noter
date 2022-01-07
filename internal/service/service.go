@@ -14,12 +14,18 @@ type Users interface {
 	RefreshTokens(refreshToken string) (domain.Tokens, error)
 }
 
+type Notes interface {
+	Create(input domain.Note) error
+}
+
 type Services struct {
 	User Users
+	Note Notes
 }
 
 func NewServices(repos *repository.Repositorys, hasher hash.PasswordHasher, tokenManager token.TokenManager, cfg *config.Config) *Services {
 	return &Services{
 		User: NewUsersService(repos.User, hasher, tokenManager, cfg.Auth.JWT.AccessTokenTTL, cfg.Auth.JWT.RefreshTokenTTL),
+		Note: NewNotesService(repos.Note),
 	}
 }
