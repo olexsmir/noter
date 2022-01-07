@@ -20,3 +20,14 @@ func (r *NotesRepo) Create(note domain.Note) error {
 
 	return err
 }
+
+func (r *NotesRepo) GetByID(id int) (domain.Note, error) {
+	var note domain.Note
+	err := r.db.Get(&note, "SELECT * FROM notes WHERE id=$1", id)
+
+	if errors.Is(err, sql.ErrNoRows) {
+		return domain.Note{}, err
+	}
+
+	return note, err
+}

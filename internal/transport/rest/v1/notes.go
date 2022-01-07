@@ -1,7 +1,9 @@
 package v1
 
 import (
+	"errors"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/Smirnov-O/noter/internal/domain"
@@ -14,6 +16,7 @@ func (h *Handler) initNotesRoutes(api *gin.RouterGroup) {
 		authenticated := notes.Group("/", h.userIdentity)
 		{
 			authenticated.POST("/", h.noteCreate)
+			authenticated.GET("/:id", h.noteGetByID)
 		}
 
 	}
@@ -49,4 +52,33 @@ func (h *Handler) noteCreate(c *gin.Context) {
 	}
 
 	c.Status(http.StatusCreated)
+}
+
+func (h *Handler) noteGetByID(c *gin.Context) {
+	idParam := c.Param("id")
+
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	note, err := h.services.Note.GetByID(id)
+	if err != nil {
+		if errors.Is(err, domain.ErrNoteNotFound) {
+			newResponse(c, http.StatusNotFound, err.Error())
+			return
+		}
+
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, domain.Note{
+		AuthorID:  note.AuthorID,
+		Title:     note.Title,
+		Content:   note.Content,
+		CreatedAt: note.CreatedAt,
+		UpdatedAt: note.UpdatedAt,
+	})
 }
