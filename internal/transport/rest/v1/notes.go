@@ -16,9 +16,9 @@ func (h *Handler) initNotesRoutes(api *gin.RouterGroup) {
 		authenticated := notes.Group("/", h.userIdentity)
 		{
 			authenticated.POST("/", h.noteCreate)
+			authenticated.GET("/", h.noteGetAll)
 			authenticated.GET("/:id", h.noteGetByID)
 		}
-
 	}
 }
 
@@ -81,4 +81,25 @@ func (h *Handler) noteGetByID(c *gin.Context) {
 		CreatedAt: note.CreatedAt,
 		UpdatedAt: note.UpdatedAt,
 	})
+}
+
+func (h *Handler) noteGetAll(c *gin.Context) {
+	userID, err := getUserId(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	notes, err := h.services.Note.GetAll(userID)
+	if err != nil {
+		if errors.Is(err, domain.ErrNoteNotFound) {
+			newResponse(c, http.StatusNotFound, err.Error())
+			return
+		}
+
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, notes)
 }

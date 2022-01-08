@@ -41,3 +41,7 @@ func (s *NotesService) GetByID(id int) (domain.Note, error) {
 
 	return note, nil
 }
+
+func (s *NotesService) GetAll(authorID int) ([]domain.Note, error) {
+	return s.repo.GetAll(authorID)
+}

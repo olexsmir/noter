@@ -31,3 +31,14 @@ func (r *NotesRepo) GetByID(id int) (domain.Note, error) {
 
 	return note, err
 }
+
+func (r *NotesRepo) GetAll(authorID int) ([]domain.Note, error) {
+	var notes []domain.Note
+	err := r.db.Select(&notes, "SELECT * FROM notes WHERE author_id=$1", authorID)
+
+	if errors.Is(err, sql.ErrNoRows) {
+		return nil, domain.ErrNoteNotFound
+	}
+
+	return notes, err
+}
