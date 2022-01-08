@@ -26,7 +26,7 @@ func (r *NotesRepo) GetByID(id int) (domain.Note, error) {
 	err := r.db.Get(&note, "SELECT * FROM notes WHERE id=$1", id)
 
 	if errors.Is(err, sql.ErrNoRows) {
-		return domain.Note{}, err
+		return domain.Note{}, domain.ErrNoteNotFound
 	}
 
 	return note, err
@@ -43,8 +43,20 @@ func (r *NotesRepo) GetAll(authorID int) ([]domain.Note, error) {
 	return notes, err
 }
 
-func (r *NotesRepo) Delete(id int) error {
-	_, err := r.db.Exec("DELETE FROM notes WHERE id=$1", id)
+func (r *NotesRepo) Delete(id, authorID int) error {
+	res, err := r.db.Exec("DELETE FROM notes WHERE id=$1 AND author_id=$2", id, authorID)
+	if err != nil {
+		return err
+	}
+
+	count, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if count == 0 {
+		return domain.ErrNoteNotFound
+	}
 
 	return err
 }

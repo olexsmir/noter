@@ -1,8 +1,6 @@
 package service
 
 import (
-	"database/sql"
-	"errors"
 	"time"
 
 	"github.com/Smirnov-O/noter/internal/domain"
@@ -30,22 +28,13 @@ func (s *NotesService) Create(input domain.Note) error {
 }
 
 func (s *NotesService) GetByID(id int) (domain.Note, error) {
-	note, err := s.repo.GetByID(id)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return domain.Note{}, domain.ErrNoteNotFound
-		}
-
-		return domain.Note{}, err
-	}
-
-	return note, nil
+	return s.repo.GetByID(id)
 }
 
 func (s *NotesService) GetAll(authorID int) ([]domain.Note, error) {
 	return s.repo.GetAll(authorID)
 }
 
-func (s *NotesService) Delete(id int) error {
-	return s.repo.Delete(id)
+func (s *NotesService) Delete(id, authorId int) error {
+	return s.repo.Delete(id, authorId)
 }

@@ -18,7 +18,7 @@ type Notes interface {
 	Create(input domain.Note) error
 	GetByID(id int) (domain.Note, error)
 	GetAll(authorID int) ([]domain.Note, error)
-	Delete(id int) error
+	Delete(id, authorID int) error
 }
 
 type Services struct {

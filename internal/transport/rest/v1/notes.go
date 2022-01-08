@@ -114,7 +114,13 @@ func (h *Handler) noteDelete(c *gin.Context) {
 		return
 	}
 
-	if err := h.services.Note.Delete(id); err != nil {
+	userID, err := getUserId(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if err := h.services.Note.Delete(id, userID); err != nil {
 		newResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
