@@ -45,3 +45,7 @@ func (s *NotesService) GetByID(id int) (domain.Note, error) {
 func (s *NotesService) GetAll(authorID int) ([]domain.Note, error) {
 	return s.repo.GetAll(authorID)
 }
+
+func (s *NotesService) Delete(id int) error {
+	return s.repo.Delete(id)
+}

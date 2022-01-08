@@ -18,6 +18,7 @@ func (h *Handler) initNotesRoutes(api *gin.RouterGroup) {
 			authenticated.POST("/", h.noteCreate)
 			authenticated.GET("/", h.noteGetAll)
 			authenticated.GET("/:id", h.noteGetByID)
+			authenticated.DELETE("/:id", h.noteDelete)
 		}
 	}
 }
@@ -102,4 +103,21 @@ func (h *Handler) noteGetAll(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, notes)
+}
+
+func (h *Handler) noteDelete(c *gin.Context) {
+	idParam := c.Param("id")
+
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if err := h.services.Note.Delete(id); err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.Status(http.StatusOK)
 }

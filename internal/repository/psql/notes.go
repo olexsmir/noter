@@ -42,3 +42,9 @@ func (r *NotesRepo) GetAll(authorID int) ([]domain.Note, error) {
 
 	return notes, err
 }
+
+func (r *NotesRepo) Delete(id int) error {
+	_, err := r.db.Exec("DELETE FROM notes WHERE id=$1", id)
+
+	return err
+}

@@ -17,6 +17,7 @@ type Notes interface {
 	Create(note domain.Note) error
 	GetByID(id int) (domain.Note, error)
 	GetAll(authorID int) ([]domain.Note, error)
+	Delete(id int) error
 }
 
 type Repositorys struct {
