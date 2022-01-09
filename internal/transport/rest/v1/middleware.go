@@ -1,7 +1,9 @@
 package v1
 
 import (
+	"errors"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -37,4 +39,14 @@ func (h *Handler) userIdentity(c *gin.Context) {
 	}
 
 	c.Set(userCtx, userID)
+}
+
+func getUserId(c *gin.Context) (int, error) {
+	id := c.GetString(userCtx)
+	userId, err := strconv.Atoi(id)
+	if err != nil {
+		return 0, errors.New("userCtx is of invalid type")
+	}
+
+	return userId, nil
 }
