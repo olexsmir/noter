@@ -15,3 +15,17 @@ type Note struct {
 	CreatedAt time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
 }
+
+type UpdateNoteInput struct {
+	Title     *string
+	Content   *string
+	UpdatedAt time.Time
+}
+
+func (v UpdateNoteInput) Validate() error {
+	if v.Title == nil && v.Content == nil {
+		return errors.New("update input has no values")
+	}
+
+	return nil
+}

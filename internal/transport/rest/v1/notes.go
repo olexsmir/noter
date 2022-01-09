@@ -18,6 +18,7 @@ func (h *Handler) initNotesRoutes(api *gin.RouterGroup) {
 			authenticated.POST("/", h.noteCreate)
 			authenticated.GET("/", h.noteGetAll)
 			authenticated.GET("/:id", h.noteGetByID)
+			authenticated.PUT("/:id", h.noteUpdate)
 			authenticated.DELETE("/:id", h.noteDelete)
 		}
 	}
@@ -103,6 +104,43 @@ func (h *Handler) noteGetAll(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, notes)
+}
+
+type noteUpdateInput struct {
+	Title   *string `json:"title"`
+	Content *string `json:"content"`
+}
+
+func (h *Handler) noteUpdate(c *gin.Context) {
+	var inp noteUpdateInput
+	if err := c.BindJSON(&inp); err != nil {
+		newResponse(c, http.StatusBadRequest, "invalid input body")
+		return
+	}
+
+	idParam := c.Param("id")
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	userID, err := getUserId(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if err := h.services.Note.Update(id, userID, domain.UpdateNoteInput{
+		Title:     inp.Title,
+		Content:   inp.Content,
+		UpdatedAt: time.Now(),
+	}); err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.Status(http.StatusOK)
 }
 
 func (h *Handler) noteDelete(c *gin.Context) {

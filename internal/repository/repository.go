@@ -17,6 +17,7 @@ type Notes interface {
 	Create(note domain.Note) error
 	GetByID(id int) (domain.Note, error)
 	GetAll(authorID int) ([]domain.Note, error)
+	Update(id, authorID int, inp domain.UpdateNoteInput) error
 	Delete(id, authorID int) error
 }
 

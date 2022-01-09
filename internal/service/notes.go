@@ -35,6 +35,18 @@ func (s *NotesService) GetAll(authorID int) ([]domain.Note, error) {
 	return s.repo.GetAll(authorID)
 }
 
+func (s *NotesService) Update(id, authorID int, inp domain.UpdateNoteInput) error {
+	if err := inp.Validate(); err != nil {
+		return err
+	}
+
+	return s.repo.Update(id, authorID, domain.UpdateNoteInput{
+		Title:     inp.Title,
+		Content:   inp.Content,
+		UpdatedAt: time.Now(),
+	})
+}
+
 func (s *NotesService) Delete(id, authorId int) error {
 	return s.repo.Delete(id, authorId)
 }
