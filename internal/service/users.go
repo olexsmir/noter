@@ -1,7 +1,6 @@
 package service
 
 import (
-	"errors"
 	"strconv"
 	"time"
 
@@ -43,13 +42,10 @@ func (s *UsersService) SignUp(user domain.UserSignUp) error {
 		RegistredAt: time.Now(),
 		LastVisitAt: time.Now(),
 	}); err != nil {
-		if errors.Is(err, domain.ErrUserAlreadyExists) {
-			return err
-		}
 		return err
 	}
 
-	return err
+	return nil
 }
 
 func (s *UsersService) SignIn(input domain.UserSignIn) (domain.Tokens, error) {
