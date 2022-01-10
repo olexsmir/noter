@@ -7,6 +7,8 @@ build:
 run: build
 	.bin/api
 
+test:
+	go test --short ./...
 
 migrate.new:
 	migrate create -ext sql -dir migrations -seq $$name
@@ -21,3 +23,7 @@ migrate.down:
 
 migrate.drop:
 	migrate -path migrations -database $$DBURI drop
+
+mockgen:
+	mockgen -source=internal/service/service.go -destination=internal/service/mocks/mock.go
+	mockgen -source=internal/repository/repository.go -destination=internal/repository/mocks/mock.go
