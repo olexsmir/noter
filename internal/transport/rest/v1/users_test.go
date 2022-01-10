@@ -140,3 +140,102 @@ func TestHandler_userSignUp(t *testing.T) {
 		})
 	}
 }
+
+func TestHandler_userSignIn(t *testing.T) {
+	type mockBehavior func(r *mock_service.MockUsers, inp domain.UserSignIn)
+
+	tests := []struct {
+		name         string
+		requestBody  string
+		input        domain.UserSignIn
+		statusCode   int
+		mockBehavior mockBehavior
+		responseBody string
+	}{
+		{
+			name:        "ok",
+			requestBody: "{\"email\": \"test@test.com\", \"password\": \"testpassword\"}",
+			input: domain.UserSignIn{
+				Email:    "test@test.com",
+				Password: "testpassword",
+			},
+			statusCode: 200,
+			mockBehavior: func(r *mock_service.MockUsers, inp domain.UserSignIn) {
+				r.EXPECT().SignIn(inp).Return(domain.Tokens{Access: "access", Refresh: "refresh"}, nil)
+			},
+			responseBody: "{\"access_token\":\"access\",\"refresh_token\":\"refresh\"}",
+		},
+		{
+			name:        "missing email",
+			requestBody: "{\"email\": \"\", \"password\": \"testpassword\"}",
+			input: domain.UserSignIn{
+				Email:    "",
+				Password: "testpassword",
+			},
+			statusCode:   400,
+			mockBehavior: func(r *mock_service.MockUsers, inp domain.UserSignIn) {},
+			responseBody: "{\"message\":\"invalid input body\"}",
+		},
+		{
+			name:        "invalid email",
+			requestBody: "{\"email\": \"test\", \"password\": \"testpassword\"}",
+			input: domain.UserSignIn{
+				Email:    "test",
+				Password: "testpassword",
+			},
+			statusCode:   400,
+			mockBehavior: func(r *mock_service.MockUsers, inp domain.UserSignIn) {},
+			responseBody: "{\"message\":\"invalid input body\"}",
+		},
+		{
+			name:        "missing password",
+			requestBody: "{\"email\": \"test@test.com\", \"password\": \"\"}",
+			input: domain.UserSignIn{
+				Email:    "test@test.com",
+				Password: "",
+			},
+			statusCode:   400,
+			mockBehavior: func(r *mock_service.MockUsers, inp domain.UserSignIn) {},
+			responseBody: "{\"message\":\"invalid input body\"}",
+		},
+		{
+			name:        "invalid password",
+			requestBody: "{\"email\": \"test@test.com\", \"password\": \"a\"}",
+			input: domain.UserSignIn{
+				Email:    "test@test.com",
+				Password: "a",
+			},
+			statusCode:   400,
+			mockBehavior: func(r *mock_service.MockUsers, inp domain.UserSignIn) {},
+			responseBody: "{\"message\":\"invalid input body\"}",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := gomock.NewController(t)
+			defer c.Finish()
+
+			s := mock_service.NewMockUsers(c)
+			tt.mockBehavior(s, tt.input)
+
+			services := &service.Services{User: s}
+			handler := Handler{services: services}
+
+			// Init endpoint
+			r := gin.New()
+			r.GET("/sign-in", func(c *gin.Context) {}, handler.userSignIn)
+
+			// Create request
+			w := httptest.NewRecorder()
+			req := httptest.NewRequest("GET", "/sign-in", bytes.NewBufferString(tt.requestBody))
+
+			// Make request
+			r.ServeHTTP(w, req)
+
+			// Assert
+			assert.Equal(t, w.Code, tt.statusCode)
+			assert.Equal(t, w.Body.String(), tt.responseBody)
+		})
+	}
+}
