@@ -59,3 +59,9 @@ func (r *NotebooksRepo) Update(id, authorID int, inp domain.UpdateNotebookInput)
 
 	return err
 }
+
+func (r *NotebooksRepo) Delete(id, authorID int) error {
+	_, err := r.db.Exec("DELETE FROM noteboks WHERE id=$1, AND author_id=$2", id, authorID)
+
+	return err
+}

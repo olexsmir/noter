@@ -26,6 +26,7 @@ type Notebooks interface {
 	GetAll(userId int) ([]domain.Notebook, error)
 	GetById(id, authorID int) (domain.Notebook, error)
 	Update(id, authorID int, inp domain.UpdateNotebookInput) error
+	Delete(id, authorID int) error
 }
 
 type Repositorys struct {

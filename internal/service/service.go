@@ -27,6 +27,7 @@ type Notebooks interface {
 	GetAll(userID int) ([]domain.Notebook, error)
 	GetById(id, userID int) (domain.Notebook, error)
 	Update(id, userID int, inp domain.UpdateNotebookInput) error
+	Delete(id, userID int) error
 }
 
 type Services struct {

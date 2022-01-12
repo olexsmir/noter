@@ -145,3 +145,25 @@ func (h *Handler) notebookUpdate(c *gin.Context) {
 
 	c.Status(http.StatusOK)
 }
+
+func (h *Handler) notebookDelete(c *gin.Context) {
+	idParam := c.Param("id")
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	userID, err := getUserId(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if err := h.services.Notebook.Delete(id, userID); err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.Status(http.StatusOK)
+}

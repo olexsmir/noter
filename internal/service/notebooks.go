@@ -44,3 +44,7 @@ func (s *NotebooksService) Update(id, userID int, inp domain.UpdateNotebookInput
 		UpdatedAt:   inp.UpdatedAt,
 	})
 }
+
+func (s *NotebooksService) Delete(id, userID int) error {
+	return s.repo.Delete(id, userID)
+}
