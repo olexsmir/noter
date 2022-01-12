@@ -24,7 +24,8 @@ type Notes interface {
 
 type Notebooks interface {
 	Create(input domain.Notebook) error
-  GetAll(userID int) ([]domain.Notebook, error)
+	GetAll(userID int) ([]domain.Notebook, error)
+	GetById(id, userID int) (domain.Notebook, error)
 }
 
 type Services struct {

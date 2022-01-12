@@ -23,7 +23,8 @@ type Notes interface {
 
 type Notebooks interface {
 	Create(notebook domain.Notebook) error
-  GetAll(userId int) ([]domain.Notebook, error)
+	GetAll(userId int) ([]domain.Notebook, error)
+	GetById(id, authorID int) (domain.Notebook, error)
 }
 
 type Repositorys struct {

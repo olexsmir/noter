@@ -36,3 +36,15 @@ func (r *NotebooksRepo) GetAll(authorID int) ([]domain.Notebook, error) {
 
 	return notebooks, err
 }
+
+func (r *NotebooksRepo) GetById(id, authorID int) (domain.Notebook, error) {
+	var notebook domain.Notebook
+	err := r.db.Get(&notebook, "SELECT * FROM notebooks WHERE id=$1 AND author_id=$2",
+		id, authorID)
+
+	if errors.Is(err, sql.ErrNoRows) {
+		return domain.Notebook{}, domain.ErrNotebookNotFound
+	}
+
+	return notebook, err
+}

@@ -3,6 +3,7 @@ package v1
 import (
 	"errors"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/Smirnov-O/noter/internal/domain"
@@ -15,7 +16,8 @@ func (h *Handler) initNotebooksRoutes(api *gin.RouterGroup) {
 		authenticated := notebooks.Group("/", h.userIdentity)
 		{
 			authenticated.POST("/", h.notebooksCreate)
-      authenticated.GET("/", h.notebookGetAll)
+			authenticated.GET("/", h.notebookGetAll)
+			authenticated.GET("/:id", h.notebookGetById)
 		}
 	}
 }
@@ -55,6 +57,34 @@ func (h *Handler) notebooksCreate(c *gin.Context) {
 	}
 
 	c.Status(http.StatusCreated)
+}
+
+func (h *Handler) notebookGetById(c *gin.Context) {
+	userID, err := getUserId(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	idParam := c.Param("id")
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	notebook, err := h.services.Notebook.GetById(id, userID)
+	if err != nil {
+		if errors.Is(err, domain.ErrNotebookNotFound) {
+			newResponse(c, http.StatusNotFound, err.Error())
+			return
+		}
+
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, notebook)
 }
 
 func (h *Handler) notebookGetAll(c *gin.Context) {
