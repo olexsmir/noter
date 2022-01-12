@@ -22,14 +22,21 @@ type Notes interface {
 	Delete(id, authorID int) error
 }
 
+type Notebooks interface {
+	Create(input domain.Notebook) error
+  GetAll(userID int) ([]domain.Notebook, error)
+}
+
 type Services struct {
-	User Users
-	Note Notes
+	User     Users
+	Note     Notes
+	Notebook Notebooks
 }
 
 func NewServices(repos *repository.Repositorys, hasher hash.PasswordHasher, tokenManager token.TokenManager, cfg *config.Config) *Services {
 	return &Services{
-		User: NewUsersService(repos.User, hasher, tokenManager, cfg.Auth.JWT.AccessTokenTTL, cfg.Auth.JWT.RefreshTokenTTL),
-		Note: NewNotesService(repos.Note),
+		User:     NewUsersService(repos.User, hasher, tokenManager, cfg.Auth.JWT.AccessTokenTTL, cfg.Auth.JWT.RefreshTokenTTL),
+		Note:     NewNotesService(repos.Note),
+		Notebook: NewNotebooksSerivce(repos.Notebook),
 	}
 }

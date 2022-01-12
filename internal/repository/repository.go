@@ -21,14 +21,21 @@ type Notes interface {
 	Delete(id, authorID int) error
 }
 
+type Notebooks interface {
+	Create(notebook domain.Notebook) error
+  GetAll(userId int) ([]domain.Notebook, error)
+}
+
 type Repositorys struct {
-	User Users
-	Note Notes
+	User     Users
+	Note     Notes
+	Notebook Notebooks
 }
 
 func NewRepositorys(db *sqlx.DB) *Repositorys {
 	return &Repositorys{
-		User: psql.NewUsersRepo(db),
-		Note: psql.NewNotesRepo(db),
+		User:     psql.NewUsersRepo(db),
+		Note:     psql.NewNotesRepo(db),
+		Notebook: psql.NewNotebooksRepo(db),
 	}
 }
