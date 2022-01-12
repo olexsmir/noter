@@ -18,6 +18,7 @@ func (h *Handler) initNotebooksRoutes(api *gin.RouterGroup) {
 			authenticated.POST("/", h.notebooksCreate)
 			authenticated.GET("/", h.notebookGetAll)
 			authenticated.GET("/:id", h.notebookGetById)
+			authenticated.PUT("/:id", h.notebookUpdate)
 		}
 	}
 }
@@ -106,4 +107,41 @@ func (h *Handler) notebookGetAll(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, notebooks)
+}
+
+type notebookUpdateInput struct {
+	Name        *string `json:"name"`
+	Description *string `json:"description"`
+}
+
+func (h *Handler) notebookUpdate(c *gin.Context) {
+	var inp notebookUpdateInput
+	if err := c.BindJSON(&inp); err != nil {
+		newResponse(c, http.StatusBadRequest, "invalid input body")
+		return
+	}
+
+	idParam := c.Param("id")
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	userID, err := getUserId(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if err := h.services.Notebook.Update(id, userID, domain.UpdateNotebookInput{
+		Name:        inp.Name,
+		Description: inp.Description,
+		UpdatedAt:   time.Now(),
+	}); err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.Status(http.StatusOK)
 }

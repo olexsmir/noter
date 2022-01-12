@@ -32,3 +32,15 @@ func (s *NotebooksService) GetAll(userID int) ([]domain.Notebook, error) {
 func (s *NotebooksService) GetById(id, userID int) (domain.Notebook, error) {
 	return s.repo.GetById(id, userID)
 }
+
+func (s *NotebooksService) Update(id, userID int, inp domain.UpdateNotebookInput) error {
+	if err := inp.Validate(); err != nil {
+		return err
+	}
+
+	return s.repo.Update(id, userID, domain.UpdateNotebookInput{
+		Name:        inp.Name,
+		Description: inp.Description,
+		UpdatedAt:   inp.UpdatedAt,
+	})
+}

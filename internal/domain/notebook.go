@@ -18,3 +18,17 @@ type Notebook struct {
 	CreatedAt   time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at" db:"updated_at"`
 }
+
+type UpdateNotebookInput struct {
+	Name        *string
+	Description *string
+	UpdatedAt   time.Time
+}
+
+func (v UpdateNotebookInput) Validate() error {
+	if v.Name == nil && v.Description == nil {
+		return errors.New("update input has no values")
+	}
+
+	return nil
+}
