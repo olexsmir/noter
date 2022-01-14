@@ -8,6 +8,8 @@ import (
 	"github.com/Smirnov-O/noter/pkg/token"
 )
 
+//go:generate mockgen -source=internal/service/service.go -destination=internal/service/mocks/mock.go
+
 type Users interface {
 	SignUp(user domain.UserSignUp) error
 	SignIn(input domain.UserSignIn) (domain.Tokens, error)
@@ -17,8 +19,8 @@ type Users interface {
 type Notes interface {
 	Create(input domain.Note) error
 	GetByID(id int) (domain.Note, error)
-	GetAll(authorID int) ([]domain.Note, error)
-	Update(id, authorID int, inp domain.UpdateNoteInput) error
+	GetAll(authorID, notebookID int) ([]domain.Note, error)
+	Update(id, authorID, notebookID int, inp domain.UpdateNoteInput) error
 	Delete(id, authorID int) error
 }
 

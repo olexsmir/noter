@@ -17,9 +17,19 @@ func (h *Handler) initNotebooksRoutes(api *gin.RouterGroup) {
 		{
 			authenticated.POST("/", h.notebooksCreate)
 			authenticated.GET("/", h.notebookGetAll)
-			authenticated.GET("/:id", h.notebookGetById)
-			authenticated.PUT("/:id", h.notebookUpdate)
+			authenticated.GET("/:notebook_id", h.notebookGetById)
+			authenticated.PUT("/:notebook_id", h.notebookUpdate)
+
+			notes := notebooks.Group("/:notebook_id/note", h.userIdentity, h.setNotebookCtx)
+			{
+				notes.POST("/", h.noteCreate)
+				notes.GET("/", h.noteGetAll)
+				notes.GET("/:id", h.noteGetByID)
+				notes.PUT("/:id", h.noteUpdate)
+				notes.DELETE("/:id", h.noteDelete)
+			}
 		}
+
 	}
 }
 
@@ -35,11 +45,7 @@ func (h *Handler) notebooksCreate(c *gin.Context) {
 		return
 	}
 
-	userID, err := getUserId(c)
-	if err != nil {
-		newResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
+	userID := getUserId(c)
 
 	if err := h.services.Notebook.Create(domain.Notebook{
 		AuthorID:    userID,
@@ -61,13 +67,9 @@ func (h *Handler) notebooksCreate(c *gin.Context) {
 }
 
 func (h *Handler) notebookGetById(c *gin.Context) {
-	userID, err := getUserId(c)
-	if err != nil {
-		newResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
+	userID := getUserId(c)
 
-	idParam := c.Param("id")
+	idParam := c.Param("notebook_id")
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
 		newResponse(c, http.StatusInternalServerError, err.Error())
@@ -89,11 +91,7 @@ func (h *Handler) notebookGetById(c *gin.Context) {
 }
 
 func (h *Handler) notebookGetAll(c *gin.Context) {
-	userID, err := getUserId(c)
-	if err != nil {
-		newResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
+	userID := getUserId(c)
 
 	notebooks, err := h.services.Notebook.GetAll(userID)
 	if err != nil {
@@ -121,18 +119,14 @@ func (h *Handler) notebookUpdate(c *gin.Context) {
 		return
 	}
 
-	idParam := c.Param("id")
+	idParam := c.Param("notebook_id")
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
 		newResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	userID, err := getUserId(c)
-	if err != nil {
-		newResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
+	userID := getUserId(c)
 
 	if err := h.services.Notebook.Update(id, userID, domain.UpdateNotebookInput{
 		Name:        inp.Name,
@@ -147,18 +141,14 @@ func (h *Handler) notebookUpdate(c *gin.Context) {
 }
 
 func (h *Handler) notebookDelete(c *gin.Context) {
-	idParam := c.Param("id")
+	idParam := c.Param("notebook_id")
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
 		newResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	userID, err := getUserId(c)
-	if err != nil {
-		newResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
+	userID := getUserId(c)
 
 	if err := h.services.Notebook.Delete(id, userID); err != nil {
 		newResponse(c, http.StatusInternalServerError, err.Error())

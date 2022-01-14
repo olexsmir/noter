@@ -6,6 +6,8 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+//go:generate mockgen -source=internal/repository/repository.go -destination=internal/repository/mocks/mock.go
+
 type Users interface {
 	Create(user domain.User) error
 	GetByCredentials(email, password string) (domain.User, error)
@@ -16,8 +18,8 @@ type Users interface {
 type Notes interface {
 	Create(note domain.Note) error
 	GetByID(id int) (domain.Note, error)
-	GetAll(authorID int) ([]domain.Note, error)
-	Update(id, authorID int, inp domain.UpdateNoteInput) error
+	GetAll(authorID, notebookID int) ([]domain.Note, error)
+	Update(id, authorID, notebookID int, inp domain.UpdateNoteInput) error
 	Delete(id, authorID int) error
 }
 
