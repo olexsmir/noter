@@ -10,6 +10,9 @@ run: build
 test:
 	go test --short ./...
 
+lint:
+	golangci-lint run
+
 migrate.new:
 	migrate create -ext sql -dir migrations -seq $$name
 
