@@ -34,6 +34,20 @@ func (m *MockUsers) EXPECT() *MockUsersMockRecorder {
 	return m.recorder
 }
 
+// Logout mocks base method.
+func (m *MockUsers) Logout(userID int) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Logout", userID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Logout indicates an expected call of Logout.
+func (mr *MockUsersMockRecorder) Logout(userID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Logout", reflect.TypeOf((*MockUsers)(nil).Logout), userID)
+}
+
 // RefreshTokens mocks base method.
 func (m *MockUsers) RefreshTokens(refreshToken string) (domain.Tokens, error) {
 	m.ctrl.T.Helper()

@@ -13,6 +13,7 @@ type Users interface {
 	GetByCredentials(email, password string) (domain.User, error)
 	GetByRefreshToken(refreshToken string) (domain.User, error)
 	SetSession(session domain.Session) error
+	RemoveSession(userID int) error
 }
 
 type Notes interface {

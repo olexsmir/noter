@@ -54,3 +54,9 @@ func (r *UsersRepo) SetSession(session domain.Session) error {
 
 	return err
 }
+
+func (r *UsersRepo) RemoveSession(userID int) error {
+	_, err := r.db.Exec("DELETE FROM sessions WHERE user_id = $1", userID)
+
+	return err
+}
