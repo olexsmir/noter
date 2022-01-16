@@ -19,6 +19,7 @@ func (h *Handler) initNotebooksRoutes(api *gin.RouterGroup) {
 			authenticated.GET("/", h.notebookGetAll)
 			authenticated.GET("/:notebook_id", h.notebookGetById)
 			authenticated.PUT("/:notebook_id", h.notebookUpdate)
+			authenticated.DELETE("/:notebook_id", h.notebookDelete)
 
 			notes := notebooks.Group("/:notebook_id/note", h.userIdentity, h.setNotebookCtx)
 			{
@@ -29,7 +30,6 @@ func (h *Handler) initNotebooksRoutes(api *gin.RouterGroup) {
 				notes.DELETE("/:id", h.noteDelete)
 			}
 		}
-
 	}
 }
 
