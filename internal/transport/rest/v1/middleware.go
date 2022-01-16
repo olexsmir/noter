@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"errors"
 	"net/http"
 	"strconv"
 	"strings"
@@ -10,8 +9,9 @@ import (
 )
 
 const (
-	authHeader = "Authorization"
-	userCtx    = "userID"
+	authHeader  = "Authorization"
+	userCtx     = "userID"
+	notebookCtx = "notebookID"
 )
 
 func (h *Handler) userIdentity(c *gin.Context) {
@@ -41,12 +41,32 @@ func (h *Handler) userIdentity(c *gin.Context) {
 	c.Set(userCtx, userID)
 }
 
-func getUserId(c *gin.Context) (int, error) {
+func (h *Handler) setNotebookCtx(c *gin.Context) {
+	id := c.Param("notebook_id")
+
+	c.Set(notebookCtx, id)
+}
+
+func getNotebookID(c *gin.Context) int {
+	id := c.GetString(notebookCtx)
+	notebookID, err := strconv.Atoi(id)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, "notebookCtx is of invalid type")
+		c.Abort()
+		return 0
+	}
+
+	return notebookID
+}
+
+func getUserId(c *gin.Context) int {
 	id := c.GetString(userCtx)
 	userId, err := strconv.Atoi(id)
 	if err != nil {
-		return 0, errors.New("userCtx is of invalid type")
+		newResponse(c, http.StatusInternalServerError, "userCtx is of invalid type")
+		c.Abort()
+		return 0
 	}
 
-	return userId, nil
+	return userId
 }

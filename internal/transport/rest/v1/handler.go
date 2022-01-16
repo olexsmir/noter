@@ -22,6 +22,6 @@ func (h *Handler) Init(api *gin.RouterGroup) {
 	v1 := api.Group("/v1")
 	{
 		h.initUsersRoutes(v1)
-		h.initNotesRoutes(v1)
+		h.initNotebooksRoutes(v1)
 	}
 }

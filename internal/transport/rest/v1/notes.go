@@ -10,20 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (h *Handler) initNotesRoutes(api *gin.RouterGroup) {
-	notes := api.Group("/note")
-	{
-		authenticated := notes.Group("/", h.userIdentity)
-		{
-			authenticated.POST("/", h.noteCreate)
-			authenticated.GET("/", h.noteGetAll)
-			authenticated.GET("/:id", h.noteGetByID)
-			authenticated.PUT("/:id", h.noteUpdate)
-			authenticated.DELETE("/:id", h.noteDelete)
-		}
-	}
-}
-
 type noteCreateInput struct {
 	Title   string `json:"title" binding:"required,min=12"`
 	Content string `json:"content" binding:"required,min=24"`
@@ -36,18 +22,16 @@ func (h *Handler) noteCreate(c *gin.Context) {
 		return
 	}
 
-	userID, err := getUserId(c)
-	if err != nil {
-		newResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
+	userID := getUserId(c)
+	notebookID := getNotebookID(c)
 
 	if err := h.services.Note.Create(domain.Note{
-		AuthorID:  userID,
-		Title:     inp.Title,
-		Content:   inp.Content,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		AuthorID:   userID,
+		Title:      inp.Title,
+		Content:    inp.Content,
+		NotebookID: notebookID,
+		CreatedAt:  time.Now(),
+		UpdatedAt:  time.Now(),
 	}); err != nil {
 		newResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -77,22 +61,21 @@ func (h *Handler) noteGetByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, domain.Note{
-		AuthorID:  note.AuthorID,
-		Title:     note.Title,
-		Content:   note.Content,
-		CreatedAt: note.CreatedAt,
-		UpdatedAt: note.UpdatedAt,
+		ID:         note.ID,
+		AuthorID:   note.AuthorID,
+		NotebookID: note.NotebookID,
+		Title:      note.Title,
+		Content:    note.Content,
+		CreatedAt:  note.CreatedAt,
+		UpdatedAt:  note.UpdatedAt,
 	})
 }
 
 func (h *Handler) noteGetAll(c *gin.Context) {
-	userID, err := getUserId(c)
-	if err != nil {
-		newResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
+	userID := getUserId(c)
+	notebookID := getNotebookID(c)
 
-	notes, err := h.services.Note.GetAll(userID)
+	notes, err := h.services.Note.GetAll(userID, notebookID)
 	if err != nil {
 		if errors.Is(err, domain.ErrNoteNotFound) {
 			newResponse(c, http.StatusNotFound, err.Error())
@@ -125,13 +108,10 @@ func (h *Handler) noteUpdate(c *gin.Context) {
 		return
 	}
 
-	userID, err := getUserId(c)
-	if err != nil {
-		newResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
+	userID := getUserId(c)
+	notebookID := getNotebookID(c)
 
-	if err := h.services.Note.Update(id, userID, domain.UpdateNoteInput{
+	if err := h.services.Note.Update(id, userID, notebookID, domain.UpdateNoteInput{
 		Title:     inp.Title,
 		Content:   inp.Content,
 		UpdatedAt: time.Now(),
@@ -145,18 +125,13 @@ func (h *Handler) noteUpdate(c *gin.Context) {
 
 func (h *Handler) noteDelete(c *gin.Context) {
 	idParam := c.Param("id")
-
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
 		newResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	userID, err := getUserId(c)
-	if err != nil {
-		newResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
+	userID := getUserId(c)
 
 	if err := h.services.Note.Delete(id, userID); err != nil {
 		newResponse(c, http.StatusInternalServerError, err.Error())

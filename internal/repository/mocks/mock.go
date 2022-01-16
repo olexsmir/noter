@@ -144,18 +144,18 @@ func (mr *MockNotesMockRecorder) Delete(id, authorID interface{}) *gomock.Call {
 }
 
 // GetAll mocks base method.
-func (m *MockNotes) GetAll(authorID int) ([]domain.Note, error) {
+func (m *MockNotes) GetAll(authorID, notebookID int) ([]domain.Note, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAll", authorID)
+	ret := m.ctrl.Call(m, "GetAll", authorID, notebookID)
 	ret0, _ := ret[0].([]domain.Note)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetAll indicates an expected call of GetAll.
-func (mr *MockNotesMockRecorder) GetAll(authorID interface{}) *gomock.Call {
+func (mr *MockNotesMockRecorder) GetAll(authorID, notebookID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAll", reflect.TypeOf((*MockNotes)(nil).GetAll), authorID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAll", reflect.TypeOf((*MockNotes)(nil).GetAll), authorID, notebookID)
 }
 
 // GetByID mocks base method.
@@ -174,7 +174,102 @@ func (mr *MockNotesMockRecorder) GetByID(id interface{}) *gomock.Call {
 }
 
 // Update mocks base method.
-func (m *MockNotes) Update(id, authorID int, inp domain.UpdateNoteInput) error {
+func (m *MockNotes) Update(id, authorID, notebookID int, inp domain.UpdateNoteInput) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Update", id, authorID, notebookID, inp)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Update indicates an expected call of Update.
+func (mr *MockNotesMockRecorder) Update(id, authorID, notebookID, inp interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockNotes)(nil).Update), id, authorID, notebookID, inp)
+}
+
+// MockNotebooks is a mock of Notebooks interface.
+type MockNotebooks struct {
+	ctrl     *gomock.Controller
+	recorder *MockNotebooksMockRecorder
+}
+
+// MockNotebooksMockRecorder is the mock recorder for MockNotebooks.
+type MockNotebooksMockRecorder struct {
+	mock *MockNotebooks
+}
+
+// NewMockNotebooks creates a new mock instance.
+func NewMockNotebooks(ctrl *gomock.Controller) *MockNotebooks {
+	mock := &MockNotebooks{ctrl: ctrl}
+	mock.recorder = &MockNotebooksMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockNotebooks) EXPECT() *MockNotebooksMockRecorder {
+	return m.recorder
+}
+
+// Create mocks base method.
+func (m *MockNotebooks) Create(notebook domain.Notebook) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Create", notebook)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Create indicates an expected call of Create.
+func (mr *MockNotebooksMockRecorder) Create(notebook interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockNotebooks)(nil).Create), notebook)
+}
+
+// Delete mocks base method.
+func (m *MockNotebooks) Delete(id, authorID int) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delete", id, authorID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockNotebooksMockRecorder) Delete(id, authorID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockNotebooks)(nil).Delete), id, authorID)
+}
+
+// GetAll mocks base method.
+func (m *MockNotebooks) GetAll(userId int) ([]domain.Notebook, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAll", userId)
+	ret0, _ := ret[0].([]domain.Notebook)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAll indicates an expected call of GetAll.
+func (mr *MockNotebooksMockRecorder) GetAll(userId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAll", reflect.TypeOf((*MockNotebooks)(nil).GetAll), userId)
+}
+
+// GetById mocks base method.
+func (m *MockNotebooks) GetById(id, authorID int) (domain.Notebook, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetById", id, authorID)
+	ret0, _ := ret[0].(domain.Notebook)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetById indicates an expected call of GetById.
+func (mr *MockNotebooksMockRecorder) GetById(id, authorID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetById", reflect.TypeOf((*MockNotebooks)(nil).GetById), id, authorID)
+}
+
+// Update mocks base method.
+func (m *MockNotebooks) Update(id, authorID int, inp domain.UpdateNotebookInput) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", id, authorID, inp)
 	ret0, _ := ret[0].(error)
@@ -182,7 +277,7 @@ func (m *MockNotes) Update(id, authorID int, inp domain.UpdateNoteInput) error {
 }
 
 // Update indicates an expected call of Update.
-func (mr *MockNotesMockRecorder) Update(id, authorID, inp interface{}) *gomock.Call {
+func (mr *MockNotebooksMockRecorder) Update(id, authorID, inp interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockNotes)(nil).Update), id, authorID, inp)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockNotebooks)(nil).Update), id, authorID, inp)
 }
