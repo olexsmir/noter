@@ -78,6 +78,20 @@ func (mr *MockUsersMockRecorder) GetByRefreshToken(refreshToken interface{}) *go
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByRefreshToken", reflect.TypeOf((*MockUsers)(nil).GetByRefreshToken), refreshToken)
 }
 
+// RemoveSession mocks base method.
+func (m *MockUsers) RemoveSession(userID int) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RemoveSession", userID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RemoveSession indicates an expected call of RemoveSession.
+func (mr *MockUsersMockRecorder) RemoveSession(userID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveSession", reflect.TypeOf((*MockUsers)(nil).RemoveSession), userID)
+}
+
 // SetSession mocks base method.
 func (m *MockUsers) SetSession(session domain.Session) error {
 	m.ctrl.T.Helper()

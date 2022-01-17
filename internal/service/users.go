@@ -35,17 +35,13 @@ func (s *UsersService) SignUp(user domain.UserSignUp) error {
 		return err
 	}
 
-	if err := s.repo.Create(domain.User{
+	return s.repo.Create(domain.User{
 		Name:        user.Name,
 		Email:       user.Email,
 		Password:    passwordHash,
 		RegistredAt: time.Now(),
 		LastVisitAt: time.Now(),
-	}); err != nil {
-		return err
-	}
-
-	return nil
+	})
 }
 
 func (s *UsersService) SignIn(input domain.UserSignIn) (domain.Tokens, error) {
@@ -69,6 +65,10 @@ func (s *UsersService) RefreshTokens(refreshToken string) (domain.Tokens, error)
 	}
 
 	return s.createSession(user.ID)
+}
+
+func (s *UsersService) Logout(userID int) error {
+	return s.repo.RemoveSession(userID)
 }
 
 func (s *UsersService) createSession(userID int) (domain.Tokens, error) {

@@ -14,6 +14,11 @@ func (h *Handler) initUsersRoutes(api *gin.RouterGroup) {
 		user.POST("/sign-up", h.userSignUp)
 		user.POST("/sign-in", h.userSignIn)
 		user.POST("/refresh-tokens", h.userRefreshTokens)
+
+		authenticated := user.Group("/", h.userIdentity)
+		{
+			authenticated.POST("/logout", h.userLogout)
+		}
 	}
 }
 
@@ -105,4 +110,15 @@ func (h *Handler) userRefreshTokens(c *gin.Context) {
 		Access:  tokens.Access,
 		Refresh: tokens.Refresh,
 	})
+}
+
+func (h *Handler) userLogout(c *gin.Context) {
+	userID := getUserId(c)
+
+	if err := h.services.User.Logout(userID); err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.Status(http.StatusOK)
 }
