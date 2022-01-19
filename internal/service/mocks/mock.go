@@ -238,6 +238,20 @@ func (mr *MockNotebooksMockRecorder) Delete(id, userID interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockNotebooks)(nil).Delete), id, userID)
 }
 
+// DeleteAllNotes mocks base method.
+func (m *MockNotebooks) DeleteAllNotes(id, userID int) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteAllNotes", id, userID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllNotes indicates an expected call of DeleteAllNotes.
+func (mr *MockNotebooksMockRecorder) DeleteAllNotes(id, userID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllNotes", reflect.TypeOf((*MockNotebooks)(nil).DeleteAllNotes), id, userID)
+}
+
 // GetAll mocks base method.
 func (m *MockNotebooks) GetAll(userID int) ([]domain.Notebook, error) {
 	m.ctrl.T.Helper()

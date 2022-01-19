@@ -150,6 +150,11 @@ func (h *Handler) notebookDelete(c *gin.Context) {
 
 	userID := getUserId(c)
 
+	if err := h.services.Notebook.DeleteAllNotes(id, userID); err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
 	if err := h.services.Notebook.Delete(id, userID); err != nil {
 		newResponse(c, http.StatusInternalServerError, err.Error())
 		return

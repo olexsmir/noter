@@ -31,6 +31,7 @@ type Notebooks interface {
 	GetById(id, userID int) (domain.Notebook, error)
 	Update(id, userID int, inp domain.UpdateNotebookInput) error
 	Delete(id, userID int) error
+	DeleteAllNotes(id, userID int) error
 }
 
 type Services struct {
