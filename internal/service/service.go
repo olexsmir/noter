@@ -1,7 +1,8 @@
 package service
 
 import (
-	"github.com/Smirnov-O/noter/internal/config"
+	"time"
+
 	"github.com/Smirnov-O/noter/internal/domain"
 	"github.com/Smirnov-O/noter/internal/repository"
 	"github.com/Smirnov-O/noter/pkg/hash"
@@ -40,10 +41,19 @@ type Services struct {
 	Notebook Notebooks
 }
 
-func NewServices(repos *repository.Repositorys, hasher hash.PasswordHasher, tokenManager token.TokenManager, cfg *config.Config) *Services {
+type Deps struct {
+	Repos        *repository.Repositorys
+	Hasher       hash.PasswordHasher
+	TokenManager token.TokenManager
+
+	AccessTokenTTL  time.Duration
+	RefreshTokenTTL time.Duration
+}
+
+func NewServices(deps Deps) *Services {
 	return &Services{
-		User:     NewUsersService(repos.User, hasher, tokenManager, cfg.Auth.JWT.AccessTokenTTL, cfg.Auth.JWT.RefreshTokenTTL),
-		Note:     NewNotesService(repos.Note),
-		Notebook: NewNotebooksSerivce(repos.Notebook),
+		User:     NewUsersService(deps.Repos.User, deps.Hasher, deps.TokenManager, deps.AccessTokenTTL, deps.RefreshTokenTTL),
+		Note:     NewNotesService(deps.Repos.Note),
+		Notebook: NewNotebooksSerivce(deps.Repos.Notebook),
 	}
 }
