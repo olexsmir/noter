@@ -50,5 +50,5 @@ func (s *NotebooksService) Delete(id, userID int) error {
 }
 
 func (s *NotebooksService) DeleteAllNotes(id, userID int) error {
-    return s.repo.DeleteAllNotes(id, userID)
+	return s.repo.DeleteAllNotes(id, userID)
 }
