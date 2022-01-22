@@ -50,18 +50,42 @@ func (r *NotebooksRepo) GetById(id, authorID int) (domain.Notebook, error) {
 }
 
 func (r *NotebooksRepo) Update(id, authorID int, inp domain.UpdateNotebookInput) error {
-	_, err := r.db.Exec(`UPDATE notebooks SET
+	res, err := r.db.Exec(`UPDATE notebooks SET
       name = COALESCE($1, name),
       description = COALESCE($2, description),
       updated_at = $3
     WHERE id=$4 AND author_id=$5`,
 		inp.Name, inp.Description, inp.UpdatedAt, id, authorID)
+	if err != nil {
+		return err
+	}
+
+	count, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if count == 0 {
+		return domain.ErrNotebookNotFound
+	}
 
 	return err
 }
 
 func (r *NotebooksRepo) Delete(id, authorID int) error {
-	_, err := r.db.Exec("DELETE FROM notebooks WHERE id=$1 AND author_id=$2", id, authorID)
+	res, err := r.db.Exec("DELETE FROM notebooks WHERE id=$1 AND author_id=$2", id, authorID)
+	if err != nil {
+		return err
+	}
+
+	count, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if count == 0 {
+		return domain.ErrNotebookNotFound
+	}
 
 	return err
 }
