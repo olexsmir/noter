@@ -2,10 +2,10 @@
 .PHONY:
 
 build:
-	go build -o .bin/api cmd/main.go
+	CGO_ENABLED=0 GOOS=linux go build -o .bin/api cmd/main.go	
 
 run: build
-	.bin/api
+	docker-compose up --remove-orphans api
 
 test:
 	go test --short ./...
