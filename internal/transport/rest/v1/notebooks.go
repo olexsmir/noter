@@ -133,6 +133,11 @@ func (h *Handler) notebookUpdate(c *gin.Context) {
 		Description: inp.Description,
 		UpdatedAt:   time.Now(),
 	}); err != nil {
+		if errors.Is(err, domain.ErrNotebookNotFound) {
+			newResponse(c, http.StatusNotFound, err.Error())
+			return
+		}
+
 		newResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -156,6 +161,11 @@ func (h *Handler) notebookDelete(c *gin.Context) {
 	}
 
 	if err := h.services.Notebook.Delete(id, userID); err != nil {
+		if errors.Is(err, domain.ErrNotebookNotFound) {
+			newResponse(c, http.StatusNotFound, err.Error())
+			return
+		}
+
 		newResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
