@@ -104,6 +104,11 @@ func (h *Handler) noteUpdate(c *gin.Context) {
 	idParam := c.Param("id")
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
+		if errors.Is(err, domain.ErrNoteNotFound) {
+			newResponse(c, http.StatusNotFound, err.Error())
+			return
+		}
+
 		newResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -134,6 +139,11 @@ func (h *Handler) noteDelete(c *gin.Context) {
 	userID := getUserId(c)
 
 	if err := h.services.Note.Delete(id, userID); err != nil {
+		if errors.Is(err, domain.ErrNoteNotFound) {
+			newResponse(c, http.StatusNotFound, err.Error())
+			return
+		}
+
 		newResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}

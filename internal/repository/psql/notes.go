@@ -45,20 +45,41 @@ func (r *NotesRepo) GetAll(authorID, notebookID int) ([]domain.Note, error) {
 }
 
 func (r *NotesRepo) Update(id, authorID, notebookID int, inp domain.UpdateNoteInput) error {
-	_, err := r.db.Exec(`UPDATE notes SET
+	res, err := r.db.Exec(`UPDATE notes SET
            title = COALESCE($1, title),
            content = COALESCE($2, content),
            updated_at = $3
          WHERE id=$4 AND author_id=$5 AND notebook_id=$6`,
 		inp.Title, inp.Content, inp.UpdatedAt, id, authorID, notebookID)
+	if err != nil {
+		return err
+	}
+
+	count, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if count == 0 {
+		return domain.ErrNotebookNotFound
+	}
 
 	return err
 }
 
 func (r *NotesRepo) Delete(id, authorID int) error {
-	_, err := r.db.Exec("DELETE FROM notes WHERE id=$1 AND author_id=$2", id, authorID)
+	res, err := r.db.Exec("DELETE FROM notes WHERE id=$1 AND author_id=$2", id, authorID)
 	if err != nil {
 		return err
+	}
+
+	count, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if count == 0 {
+		return domain.ErrNotebookNotFound
 	}
 
 	return err
