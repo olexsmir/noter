@@ -11,6 +11,7 @@ type Note struct {
 	ID         int       `json:"id" db:"id"`
 	AuthorID   int       `json:"author_id" db:"author_id"`
 	NotebookID int       `json:"notebook_id" db:"notebook_id"`
+	Pinted     bool      `json:"pinted" db:"pinted"`
 	Title      string    `json:"title" db:"title"`
 	Content    string    `json:"content" db:"content"`
 	CreatedAt  time.Time `json:"created_at" db:"created_at"`
@@ -20,6 +21,7 @@ type Note struct {
 type UpdateNoteInput struct {
 	Title     *string
 	Content   *string
+	Pinted    bool
 	UpdatedAt time.Time
 }
 
