@@ -92,6 +92,7 @@ func (h *Handler) noteGetAll(c *gin.Context) {
 type noteUpdateInput struct {
 	Title   *string `json:"title"`
 	Content *string `json:"content"`
+	Pinted  bool    `json:"pinted"`
 }
 
 func (h *Handler) noteUpdate(c *gin.Context) {
@@ -119,6 +120,7 @@ func (h *Handler) noteUpdate(c *gin.Context) {
 	if err := h.services.Note.Update(id, userID, notebookID, domain.UpdateNoteInput{
 		Title:     inp.Title,
 		Content:   inp.Content,
+		Pinted:    inp.Pinted,
 		UpdatedAt: time.Now(),
 	}); err != nil {
 		newResponse(c, http.StatusInternalServerError, err.Error())

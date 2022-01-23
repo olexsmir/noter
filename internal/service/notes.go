@@ -42,6 +42,7 @@ func (s *NotesService) Update(id, authorID, notebookID int, inp domain.UpdateNot
 	return s.repo.Update(id, authorID, notebookID, domain.UpdateNoteInput{
 		Title:     inp.Title,
 		Content:   inp.Content,
+		Pinted:    inp.Pinted,
 		UpdatedAt: inp.UpdatedAt,
 	})
 }

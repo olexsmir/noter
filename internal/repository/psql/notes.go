@@ -45,12 +45,14 @@ func (r *NotesRepo) GetAll(authorID, notebookID int) ([]domain.Note, error) {
 }
 
 func (r *NotesRepo) Update(id, authorID, notebookID int, inp domain.UpdateNoteInput) error {
-	res, err := r.db.Exec(`UPDATE notes SET
-           title = COALESCE($1, title),
-           content = COALESCE($2, content),
-           updated_at = $3
-         WHERE id=$4 AND author_id=$5 AND notebook_id=$6`,
-		inp.Title, inp.Content, inp.UpdatedAt, id, authorID, notebookID)
+	res, err := r.db.Exec(`
+        UPDATE notes SET
+            title = COALESCE($1, title),
+            content = COALESCE($2, content),
+            pinted = COALESCE($3, pinted),
+            updated_at = $4
+        WHERE id=$5 AND author_id=$6 AND notebook_id=$7`,
+		inp.Title, inp.Content, inp.Pinted, inp.UpdatedAt, id, authorID, notebookID)
 	if err != nil {
 		return err
 	}
