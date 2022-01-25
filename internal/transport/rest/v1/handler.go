@@ -1,8 +1,8 @@
 package v1
 
 import (
-	"github.com/Smirnov-O/noter/internal/service"
-	"github.com/Smirnov-O/noter/pkg/token"
+	"github.com/flof-ik/noter/internal/service"
+	"github.com/flof-ik/noter/pkg/token"
 	"github.com/gin-gonic/gin"
 )
 

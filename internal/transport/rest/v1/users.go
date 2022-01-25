@@ -4,7 +4,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/Smirnov-O/noter/internal/domain"
+	"github.com/flof-ik/noter/internal/domain"
 	"github.com/gin-gonic/gin"
 )
 

@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"errors"
 
-	"github.com/Smirnov-O/noter/internal/domain"
-	"github.com/Smirnov-O/noter/pkg/database"
+	"github.com/flof-ik/noter/internal/domain"
+	"github.com/flof-ik/noter/pkg/database"
 	"github.com/jmoiron/sqlx"
 )
 

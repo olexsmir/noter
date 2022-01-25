@@ -1,9 +1,9 @@
 package rest
 
 import (
-	"github.com/Smirnov-O/noter/internal/service"
-	v1 "github.com/Smirnov-O/noter/internal/transport/rest/v1"
-	"github.com/Smirnov-O/noter/pkg/token"
+	"github.com/flof-ik/noter/internal/service"
+	v1 "github.com/flof-ik/noter/internal/transport/rest/v1"
+	"github.com/flof-ik/noter/pkg/token"
 	"github.com/gin-gonic/gin"
 )
 

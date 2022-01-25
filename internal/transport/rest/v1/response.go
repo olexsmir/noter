@@ -1,7 +1,7 @@
 package v1
 
 import (
-	"github.com/Smirnov-O/noter/pkg/logger"
+	"github.com/flof-ik/noter/pkg/logger"
 	"github.com/gin-gonic/gin"
 )
 

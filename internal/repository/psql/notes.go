@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"errors"
 
-	"github.com/Smirnov-O/noter/internal/domain"
+	"github.com/flof-ik/noter/internal/domain"
 	"github.com/jmoiron/sqlx"
 )
 

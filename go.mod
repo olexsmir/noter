@@ -1,4 +1,4 @@
-module github.com/Smirnov-O/noter
+module github.com/flof-ik/noter
 
 go 1.16
 

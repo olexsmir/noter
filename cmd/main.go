@@ -9,15 +9,15 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/Smirnov-O/noter/internal/config"
-	"github.com/Smirnov-O/noter/internal/repository"
-	"github.com/Smirnov-O/noter/internal/server"
-	"github.com/Smirnov-O/noter/internal/service"
-	"github.com/Smirnov-O/noter/internal/transport/rest"
-	"github.com/Smirnov-O/noter/pkg/database"
-	"github.com/Smirnov-O/noter/pkg/hash"
-	"github.com/Smirnov-O/noter/pkg/logger"
-	"github.com/Smirnov-O/noter/pkg/token"
+	"github.com/flof-ik/noter/internal/config"
+	"github.com/flof-ik/noter/internal/repository"
+	"github.com/flof-ik/noter/internal/server"
+	"github.com/flof-ik/noter/internal/service"
+	"github.com/flof-ik/noter/internal/transport/rest"
+	"github.com/flof-ik/noter/pkg/database"
+	"github.com/flof-ik/noter/pkg/hash"
+	"github.com/flof-ik/noter/pkg/logger"
+	"github.com/flof-ik/noter/pkg/token"
 )
 
 func main() {

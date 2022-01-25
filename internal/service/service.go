@@ -3,10 +3,10 @@ package service
 import (
 	"time"
 
-	"github.com/Smirnov-O/noter/internal/domain"
-	"github.com/Smirnov-O/noter/internal/repository"
-	"github.com/Smirnov-O/noter/pkg/hash"
-	"github.com/Smirnov-O/noter/pkg/token"
+	"github.com/flof-ik/noter/internal/domain"
+	"github.com/flof-ik/noter/internal/repository"
+	"github.com/flof-ik/noter/pkg/hash"
+	"github.com/flof-ik/noter/pkg/token"
 )
 
 //go:generate mockgen -source=internal/service/service.go -destination=internal/service/mocks/mock.go

@@ -7,7 +7,7 @@ package mock_repository
 import (
 	reflect "reflect"
 
-	domain "github.com/Smirnov-O/noter/internal/domain"
+	domain "github.com/flof-ik/noter/internal/domain"
 	gomock "github.com/golang/mock/gomock"
 )
 
