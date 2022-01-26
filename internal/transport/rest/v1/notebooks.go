@@ -38,6 +38,17 @@ type notebooksCreateInput struct {
 	Description string `json':"description"`
 }
 
+// @Summary Create notebook
+// @Security user-auth
+// @Tags notebooks
+// @Description create new notebook
+// @Accept json
+// @Produce json
+// @Success 201
+// @Param input body notebooksCreateInput true "create notebook input"
+// @Failure 400,401,404,500 {object} response
+// @Failure default {object} response
+// @Router /notebook [post]
 func (h *Handler) notebooksCreate(c *gin.Context) {
 	var inp notebooksCreateInput
 	if err := c.BindJSON(&inp); err != nil {
@@ -66,6 +77,17 @@ func (h *Handler) notebooksCreate(c *gin.Context) {
 	c.Status(http.StatusCreated)
 }
 
+// @Summary Get notebook by id
+// @Security user-auth
+// @Tags notebooks
+// @Description get notebook by id
+// @Accept json
+// @Produce json
+// @Param id path string true "notebook_id"
+// @Success 200 {object} domain.Notebook
+// @Failure 400,401,404,500 {object} response
+// @Failure default {object} response
+// @Router /notebook/{id} [get]
 func (h *Handler) notebookGetById(c *gin.Context) {
 	userID := getUserId(c)
 
@@ -90,6 +112,16 @@ func (h *Handler) notebookGetById(c *gin.Context) {
 	c.JSON(http.StatusOK, notebook)
 }
 
+// @Summary Get all notebooks
+// @Security user-auth
+// @Tags notebooks
+// @Description get all notebooks
+// @Accept json
+// @Produce json
+// @Success 200 {object} []domain.Notebook
+// @Failure 400,401,404,500 {object} response
+// @Failure default {object} response
+// @Router /notebook [get]
 func (h *Handler) notebookGetAll(c *gin.Context) {
 	userID := getUserId(c)
 
@@ -112,6 +144,18 @@ type notebookUpdateInput struct {
 	Description *string `json:"description"`
 }
 
+// @Summary Update notebook
+// @Security user-auth
+// @Tags notebooks
+// @Description update notebook
+// @Accept json
+// @Produce json
+// @Param id path string true "notebook_id"
+// @Param input body notebookUpdateInput true "update info"
+// @Success 200
+// @Failure 400,401,404,500 {object} response
+// @Failure default {object} response
+// @Router /notebook/{id} [put]
 func (h *Handler) notebookUpdate(c *gin.Context) {
 	var inp notebookUpdateInput
 	if err := c.BindJSON(&inp); err != nil {
@@ -145,6 +189,17 @@ func (h *Handler) notebookUpdate(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+// @Summary Update notebook
+// @Security user-auth
+// @Tags notebooks
+// @Description delete notebook
+// @Accept json
+// @Produce json
+// @Param id path string true "notebook_id"
+// @Success 200
+// @Failure 400,401,404,500 {object} response
+// @Failure default {object} response
+// @Router /notebook/{id} [delete]
 func (h *Handler) notebookDelete(c *gin.Context) {
 	idParam := c.Param("notebook_id")
 	id, err := strconv.Atoi(idParam)

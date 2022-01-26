@@ -28,6 +28,17 @@ type userSignUpInput struct {
 	Password string `json:"password" binding:"required,min=8,max=64"`
 }
 
+// @Summary User SignUp
+// @Tags user-auth
+// @Description create user account
+// @ModuleID userSignUp
+// @Accept json
+// @Produce json
+// @Param input body userSignUpInput true "sign up info"
+// @Success 201
+// @Failure 400,500 {object} response
+// @Failure default {object} response
+// @Router /auth/sign-up [post]
 func (h *Handler) userSignUp(c *gin.Context) {
 	var inp userSignUpInput
 	if err := c.BindJSON(&inp); err != nil {
@@ -57,6 +68,17 @@ type userSignInInput struct {
 	Password string `json:"password" binding:"required,min=8,max=64"`
 }
 
+// @Summary User SignIn
+// @Tags user-auth
+// @Description user sign in
+// @ModuleID authSignIn
+// @Accept json
+// @Produce json
+// @Param input body userSignInInput true "sign up info"
+// @Success 200 {object} domain.Tokens
+// @Failure 400,500 {object} response
+// @Failure default {object} response
+// @Router /auth/sign-in [post]
 func (h *Handler) userSignIn(c *gin.Context) {
 	var inp userSignInInput
 	if err := c.BindJSON(&inp); err != nil {
@@ -88,6 +110,16 @@ type userRefreshTokensInput struct {
 	RefreshToken string `json:"refresh_token" binding:"required"`
 }
 
+// @Summary User Refresh Tokens
+// @Tags user-auth
+// @Description user refresh tokens
+// @Accept json
+// @Produce json
+// @Param input body userRefreshTokensInput true "sign up info"
+// @Success 200 {object} domain.Tokens
+// @Failure 400,500 {object} response
+// @Failure default {object} response
+// @Router /auth/refresh-tokens [post]
 func (h *Handler) userRefreshTokens(c *gin.Context) {
 	var inp userRefreshTokensInput
 	if err := c.BindJSON(&inp); err != nil {
@@ -112,6 +144,16 @@ func (h *Handler) userRefreshTokens(c *gin.Context) {
 	})
 }
 
+// @Summary User logout
+// @Security user-auth
+// @Tags user-auth
+// @Description user logout
+// @Accept json
+// @Produce json
+// @Success 200
+// @Failure 400,500 {object} response
+// @Failure default {object} response
+// @Router /auth/logout [post]
 func (h *Handler) userLogout(c *gin.Context) {
 	userID := getUserId(c)
 

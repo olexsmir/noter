@@ -13,6 +13,9 @@ test:
 lint:
 	golangci-lint run
 
+swag:
+	swag init -g cmd/main.go
+
 migrate.new:
 	migrate create -ext sql -dir migrations -seq $$name
 
