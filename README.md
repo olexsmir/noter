@@ -20,6 +20,10 @@ JWT_SIGNING_KEY="random string"
 ### Make targets
 - `run` - Build and start project
 - `build` - Only build project
+- `test` - Run tests
+- `lint` - Run linters
+- `swag` - Generate swagger documentation
+- `mockgen` - Generate mocks
 - `migrate.new name=migrateName` - Create new migration
 - `migrate.up` - Setup migrations
 - `migrate.down` - Remove last migration
