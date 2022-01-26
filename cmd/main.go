@@ -20,6 +20,17 @@ import (
 	"github.com/flof-ik/noter/pkg/token"
 )
 
+// @title Noter API
+// @version 1.0
+// @description REST API for Noter
+
+// @host localhost:8000
+// @BasePath /api/v1/
+
+// @securityDefinitions.apikey UserAuth
+// @in header
+// @name Authorization
+
 func main() {
 	cfg, err := config.New("configs")
 	if err != nil {
@@ -55,7 +66,7 @@ func main() {
 	handlers := rest.NewHandler(services, tokenManager)
 
 	// Server
-	srv := server.NewServer(cfg, handlers.InitRoutes())
+	srv := server.NewServer(cfg, handlers.InitRoutes(cfg))
 	go func() {
 		if err := srv.Start(); !errors.Is(err, http.ErrServerClosed) {
 			logger.Error(err)
