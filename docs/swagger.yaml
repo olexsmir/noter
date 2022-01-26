@@ -1,10 +1,43 @@
 basePath: /api/v1/
 definitions:
+  domain.Note:
+    properties:
+      author_id:
+        type: integer
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      notebook_id:
+        type: integer
+      pinted:
+        type: boolean
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
   domain.Tokens:
     properties:
       access_token:
         type: string
       refresh_token:
+        type: string
+    type: object
+  v1.notebookUpdateInput:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+  v1.notebooksCreateInput:
+    properties:
+      description:
+        type: string
+      name:
         type: string
     type: object
   v1.response:
@@ -176,6 +209,215 @@ paths:
       summary: User SignUp
       tags:
       - user-auth
+  /notebook:
+    get:
+      consumes:
+      - application/json
+      description: get all notebooks
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Note'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.response'
+      security:
+      - user-auth: []
+      summary: Get all notebooks
+      tags:
+      - notebooks
+    post:
+      consumes:
+      - application/json
+      description: create new notebook
+      parameters:
+      - description: create notebook input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.notebooksCreateInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.response'
+      security:
+      - user-auth: []
+      summary: Create notebook
+      tags:
+      - notebooks
+  /notebook/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete notebook
+      parameters:
+      - description: notebook_id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.response'
+      security:
+      - user-auth: []
+      summary: Update notebook
+      tags:
+      - notebooks
+    get:
+      consumes:
+      - application/json
+      description: get notebook by id
+      parameters:
+      - description: notebook_id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Note'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.response'
+      security:
+      - user-auth: []
+      summary: Get notebook by id
+      tags:
+      - notebooks
+    put:
+      consumes:
+      - application/json
+      description: update notebook
+      parameters:
+      - description: notebook_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: sign up info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.notebookUpdateInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.response'
+      security:
+      - user-auth: []
+      summary: Update notebook
+      tags:
+      - notebooks
 securityDefinitions:
   UserAuth:
     in: header
