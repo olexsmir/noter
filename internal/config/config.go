@@ -13,15 +13,20 @@ const (
 	defaultHTTPMaxHeaderMegabytes = 1
 	defaultAccessTokenTTL         = 15 * time.Minute
 	defaultRefreshTokenTTL        = 24 * time.Hour * 30
+
+	EnvLocal = "local"
+	Prod     = "prod"
 )
 
 type Config struct {
-	HTTP     HTTPConfig
-	Postgres PostgresConfig
-	Auth     AuthConfig
+	Environment string
+	HTTP        HTTPConfig
+	Postgres    PostgresConfig
+	Auth        AuthConfig
 }
 
 type HTTPConfig struct {
+	Host               string        `mapstructure:"host"`
 	Port               string        `mapstructure:"port"`
 	ReadTimeout        time.Duration `mapstructure:"readTimeout"`
 	WriteTimeout       time.Duration `mapstructure:"writeTimeout"`
@@ -51,7 +56,7 @@ type JWTConfig struct {
 func New(configDir string) (*Config, error) {
 	populateDefaults()
 
-	if err := readConfigFile(configDir); err != nil {
+	if err := readConfigFile(configDir, os.Getenv("APP_ENV")); err != nil {
 		return nil, err
 	}
 
@@ -66,6 +71,8 @@ func New(configDir string) (*Config, error) {
 }
 
 func setFromEnv(cfg *Config) {
+	cfg.Environment = os.Getenv("APP_ENV")
+
 	cfg.Postgres.Host = os.Getenv("POSTGRES_HOST")
 	cfg.Postgres.Port = os.Getenv("POSTGRES_PORT")
 	cfg.Postgres.Username = os.Getenv("POSTGRES_USERNAME")
@@ -91,13 +98,19 @@ func unmarshal(cfg *Config) error {
 	return nil
 }
 
-func readConfigFile(configDir string) error {
+func readConfigFile(configDir string, env string) error {
 	viper.AddConfigPath(configDir)
 	viper.SetConfigName("main")
 
 	if err := viper.ReadInConfig(); err != nil {
 		return err
 	}
+
+	if env == EnvLocal {
+		return nil
+	}
+
+	viper.SetConfigName(env)
 
 	return viper.MergeInConfig()
 }

@@ -8,6 +8,7 @@
 Create .env file in root directory and add following values:
 
 ```shell
+APP_ENV="local"
 POSTGRES_HOST="localhost"
 POSTGRES_PORT="5432"
 POSTGRES_USERNAME="postgres"

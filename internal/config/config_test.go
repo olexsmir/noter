@@ -9,6 +9,7 @@ import (
 
 func TestNew(t *testing.T) {
 	type env struct {
+		appEnv           string
 		postgresHost     string
 		postgresPort     string
 		postgresUsername string
@@ -23,6 +24,7 @@ func TestNew(t *testing.T) {
 	}
 
 	setEnv := func(env env) {
+		os.Setenv("APP_ENV", env.appEnv)
 		os.Setenv("POSTGRES_HOST", env.postgresHost)
 		os.Setenv("POSTGRES_PORT", env.postgresPort)
 		os.Setenv("POSTGRES_USERNAME", env.postgresUsername)
@@ -42,6 +44,7 @@ func TestNew(t *testing.T) {
 			args: args{
 				path: "fixtures",
 				env: env{
+					appEnv:           "local",
 					postgresHost:     "localhost",
 					postgresPort:     "5432",
 					postgresUsername: "postgres",
@@ -51,7 +54,9 @@ func TestNew(t *testing.T) {
 				},
 			},
 			want: &Config{
+				Environment: "local",
 				HTTP: HTTPConfig{
+					Host:               "localhost",
 					Port:               "80",
 					ReadTimeout:        time.Second * 10,
 					MaxHeaderMegabytes: 1,
