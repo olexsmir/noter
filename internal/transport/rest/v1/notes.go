@@ -15,6 +15,18 @@ type noteCreateInput struct {
 	Content string `json:"content" binding:"required,min=24"`
 }
 
+// @Summary Create note in notebook
+// @Security user-auth
+// @Tags notes
+// @Description create new note
+// @Accept json
+// @Produce json
+// @Success 201
+// @Param input body noteCreateInput true "create note input"
+// @Param notebook_id path string true "notebook_id"
+// @Failure 400,401,404,500 {object} response
+// @Failure default {object} response
+// @Router /notebook/{notebook_id}/note [post]
 func (h *Handler) noteCreate(c *gin.Context) {
 	var inp noteCreateInput
 	if err := c.BindJSON(&inp); err != nil {
@@ -40,6 +52,18 @@ func (h *Handler) noteCreate(c *gin.Context) {
 	c.Status(http.StatusCreated)
 }
 
+// @Summary Get note from notebook
+// @Security user-auth
+// @Tags notes
+// @Description get a note by id
+// @Accept json
+// @Produce json
+// @Success 200 {object} domain.Note
+// @Param notebook_id path string true "notebook_id"
+// @Param id path string true "id"
+// @Failure 400,401,404,500 {object} response
+// @Failure default {object} response
+// @Router /notebook/{notebook_id}/note/{id} [get]
 func (h *Handler) noteGetByID(c *gin.Context) {
 	idParam := c.Param("id")
 
@@ -71,6 +95,18 @@ func (h *Handler) noteGetByID(c *gin.Context) {
 	})
 }
 
+// @Summary Get all notes
+// @Security user-auth
+// @Tags notes
+// @Description get all note from notebook
+// @Accept json
+// @Produce json
+// @Success 200 {object} []domain.Note
+// @Param notebook_id path string true "notebook_id"
+// @Param id path string true "id"
+// @Failure 400,401,404,500 {object} response
+// @Failure default {object} response
+// @Router /notebook/{notebook_id}/note [get]
 func (h *Handler) noteGetAll(c *gin.Context) {
 	userID := getUserId(c)
 	notebookID := getNotebookID(c)
@@ -95,6 +131,19 @@ type noteUpdateInput struct {
 	Pinted  bool    `json:"pinted"`
 }
 
+// @Summary Update note
+// @Security user-auth
+// @Tags notes
+// @Description update note from notebook by id
+// @Accept json
+// @Produce json
+// @Success 200 {object} []domain.Note
+// @Param notebook_id path string true "notebook_id"
+// @Param id path string true "id"
+// @Param input body noteUpdateInput  true "update info"
+// @Failure 400,401,404,500 {object} response
+// @Failure default {object} response
+// @Router /notebook/{notebook_id}/note/{id} [put]
 func (h *Handler) noteUpdate(c *gin.Context) {
 	var inp noteUpdateInput
 	if err := c.BindJSON(&inp); err != nil {
@@ -130,6 +179,18 @@ func (h *Handler) noteUpdate(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+// @Summary Delete note
+// @Security user-auth
+// @Tags notes
+// @Description delete note from notebook by id
+// @Accept json
+// @Produce json
+// @Success 200
+// @Param notebook_id path string true "notebook_id"
+// @Param id path string true "id"
+// @Failure 400,401,404,500 {object} response
+// @Failure default {object} response
+// @Router /notebook/{notebook_id}/note/{id} [delete]
 func (h *Handler) noteDelete(c *gin.Context) {
 	idParam := c.Param("id")
 	id, err := strconv.Atoi(idParam)

@@ -84,7 +84,7 @@ func (h *Handler) notebooksCreate(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "notebook_id"
-// @Success 200 {object} domain.Note
+// @Success 200 {object} domain.Notebook
 // @Failure 400,401,404,500 {object} response
 // @Failure default {object} response
 // @Router /notebook/{id} [get]
@@ -118,7 +118,7 @@ func (h *Handler) notebookGetById(c *gin.Context) {
 // @Description get all notebooks
 // @Accept json
 // @Produce json
-// @Success 200 {object} []domain.Note
+// @Success 200 {object} []domain.Notebook
 // @Failure 400,401,404,500 {object} response
 // @Failure default {object} response
 // @Router /notebook [get]
