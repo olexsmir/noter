@@ -14,6 +14,7 @@ import (
 	"github.com/flof-ik/noter/internal/server"
 	"github.com/flof-ik/noter/internal/service"
 	"github.com/flof-ik/noter/internal/transport/rest"
+	"github.com/flof-ik/noter/pkg/cache"
 	"github.com/flof-ik/noter/pkg/database"
 	"github.com/flof-ik/noter/pkg/hash"
 	"github.com/flof-ik/noter/pkg/logger"
@@ -55,6 +56,7 @@ func main() {
 		logger.Error(err)
 	}
 
+    _ = cache.NewMemoryCache()
 	repos := repository.NewRepositorys(db)
 	services := service.NewServices(service.Deps{
 		Repos:           repos,
