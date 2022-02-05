@@ -55,6 +55,7 @@ func TestNew(t *testing.T) {
 			},
 			want: &Config{
 				Environment: "local",
+				CacheTTL:    3600 * time.Second,
 				HTTP: HTTPConfig{
 					Host:               "localhost",
 					Port:               "80",

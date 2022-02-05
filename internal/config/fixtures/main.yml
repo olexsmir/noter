@@ -5,6 +5,9 @@ http:
   readTimeout: 10s
   writeTimeout: 10s
 
+cache:
+  ttl: 3600s
+
 postgres:
   dbname: test_db
   sslmode: disable
