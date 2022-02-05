@@ -56,14 +56,16 @@ func main() {
 		logger.Error(err)
 	}
 
-    _ = cache.NewMemoryCache()
+	memCache := cache.NewMemoryCache()
 	repos := repository.NewRepositorys(db)
 	services := service.NewServices(service.Deps{
 		Repos:           repos,
 		Hasher:          hasher,
 		TokenManager:    tokenManager,
+		Cache:           memCache,
 		AccessTokenTTL:  cfg.Auth.JWT.AccessTokenTTL,
 		RefreshTokenTTL: cfg.Auth.JWT.RefreshTokenTTL,
+		CacheTTL:        int64(cfg.CacheTTL.Seconds()),
 	})
 	handlers := rest.NewHandler(services, tokenManager)
 

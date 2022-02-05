@@ -3,15 +3,20 @@ package service
 import (
 	"github.com/flof-ik/noter/internal/domain"
 	"github.com/flof-ik/noter/internal/repository"
+	"github.com/flof-ik/noter/pkg/cache"
 )
 
 type NotesService struct {
-	repo repository.Notes
+	repo  repository.Notes
+	cache cache.Cacher
+	ttl   int64
 }
 
-func NewNotesService(repo repository.Notes) *NotesService {
+func NewNotesService(repo repository.Notes, cache cache.Cacher, ttl int64) *NotesService {
 	return &NotesService{
-		repo: repo,
+		repo:  repo,
+		cache: cache,
+		ttl:   ttl,
 	}
 }
 
@@ -27,7 +32,18 @@ func (s *NotesService) Create(input domain.Note) error {
 }
 
 func (s *NotesService) GetByID(id int) (domain.Note, error) {
-	return s.repo.GetByID(id)
+	if v, err := s.cache.Get(id); err != nil {
+		return v.(domain.Note), err
+	}
+
+	note, err := s.repo.GetByID(id)
+	if err != nil {
+		return domain.Note{}, err
+	}
+
+	err = s.cache.Set(id, note, s.ttl)
+
+	return note, err
 }
 
 func (s *NotesService) GetAll(authorID, notebookID int) ([]domain.Note, error) {
