@@ -23,6 +23,7 @@ type Config struct {
 	HTTP        HTTPConfig
 	Postgres    PostgresConfig
 	Auth        AuthConfig
+	CacheTTL    time.Duration `mapstructure:"ttl"`
 }
 
 type HTTPConfig struct {
@@ -83,6 +84,10 @@ func setFromEnv(cfg *Config) {
 }
 
 func unmarshal(cfg *Config) error {
+	if err := viper.UnmarshalKey("cache.ttl", &cfg.CacheTTL); err != nil {
+		return err
+	}
+
 	if err := viper.UnmarshalKey("http", &cfg.HTTP); err != nil {
 		return err
 	}
