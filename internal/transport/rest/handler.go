@@ -30,6 +30,7 @@ func (h *Handler) InitRoutes(cfg *config.Config) *gin.Engine {
 	r.Use(
 		gin.Recovery(),
 		gin.Logger(),
+		corsMiddleware,
 	)
 
 	docs.SwaggerInfo.Host = fmt.Sprintf("%s:%s", cfg.HTTP.Host, cfg.HTTP.Port)
