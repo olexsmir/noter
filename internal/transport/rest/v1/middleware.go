@@ -47,26 +47,23 @@ func (h *Handler) setNotebookCtx(c *gin.Context) {
 	c.Set(notebookCtx, id)
 }
 
-func getNotebookID(c *gin.Context) int {
+func getNotebookID(c *gin.Context) (int, error) {
 	id := c.GetString(notebookCtx)
 	notebookID, err := strconv.Atoi(id)
 	if err != nil {
 		newResponse(c, http.StatusInternalServerError, "notebookCtx is of invalid type")
-		c.Abort()
-		return 0
+		return 0, err
 	}
 
-	return notebookID
+	return notebookID, nil
 }
 
-func getUserId(c *gin.Context) int {
+func getUserId(c *gin.Context) (int, error) {
 	id := c.GetString(userCtx)
 	userId, err := strconv.Atoi(id)
 	if err != nil {
-		newResponse(c, http.StatusInternalServerError, "userCtx is of invalid type")
-		c.Abort()
-		return 0
+		return 0, err
 	}
 
-	return userId
+	return userId, nil
 }

@@ -34,8 +34,17 @@ func (h *Handler) noteCreate(c *gin.Context) {
 		return
 	}
 
-	userID := getUserId(c)
-	notebookID := getNotebookID(c)
+	userID, err := getUserId(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, "userCtx is of invalid type")
+		return
+	}
+
+	notebookID, err := getNotebookID(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, "notebookCtx is of invalid type")
+		return
+	}
 
 	if err := h.services.Note.Create(domain.Note{
 		AuthorID:   userID,
@@ -108,8 +117,17 @@ func (h *Handler) noteGetByID(c *gin.Context) {
 // @Failure default {object} response
 // @Router /notebook/{notebook_id}/note [get]
 func (h *Handler) noteGetAll(c *gin.Context) {
-	userID := getUserId(c)
-	notebookID := getNotebookID(c)
+	userID, err := getUserId(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, "userCtx is of invalid type")
+		return
+	}
+
+	notebookID, err := getNotebookID(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, "notebookCtx is of invalid type")
+		return
+	}
 
 	notes, err := h.services.Note.GetAll(userID, notebookID)
 	if err != nil {
@@ -163,8 +181,17 @@ func (h *Handler) noteUpdate(c *gin.Context) {
 		return
 	}
 
-	userID := getUserId(c)
-	notebookID := getNotebookID(c)
+	userID, err := getUserId(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, "userCtx is of invalid type")
+		return
+	}
+
+	notebookID, err := getNotebookID(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, "notebookCtx is of invalid type")
+		return
+	}
 
 	if err := h.services.Note.Update(id, userID, notebookID, domain.UpdateNoteInput{
 		Title:     inp.Title,
@@ -199,7 +226,11 @@ func (h *Handler) noteDelete(c *gin.Context) {
 		return
 	}
 
-	userID := getUserId(c)
+	userID, err := getUserId(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, "userCtx is of invalid type")
+		return
+	}
 
 	if err := h.services.Note.Delete(id, userID); err != nil {
 		if errors.Is(err, domain.ErrNoteNotFound) {

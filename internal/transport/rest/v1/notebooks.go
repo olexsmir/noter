@@ -56,7 +56,11 @@ func (h *Handler) notebooksCreate(c *gin.Context) {
 		return
 	}
 
-	userID := getUserId(c)
+	userID, err := getUserId(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, "userCtx is of invalid type")
+		return
+	}
 
 	if err := h.services.Notebook.Create(domain.Notebook{
 		AuthorID:    userID,
@@ -89,7 +93,11 @@ func (h *Handler) notebooksCreate(c *gin.Context) {
 // @Failure default {object} response
 // @Router /notebook/{id} [get]
 func (h *Handler) notebookGetById(c *gin.Context) {
-	userID := getUserId(c)
+	userID, err := getUserId(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, "userCtx is of invalid type")
+		return
+	}
 
 	idParam := c.Param("notebook_id")
 	id, err := strconv.Atoi(idParam)
@@ -123,7 +131,11 @@ func (h *Handler) notebookGetById(c *gin.Context) {
 // @Failure default {object} response
 // @Router /notebook [get]
 func (h *Handler) notebookGetAll(c *gin.Context) {
-	userID := getUserId(c)
+	userID, err := getUserId(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, "userCtx is of invalid type")
+		return
+	}
 
 	notebooks, err := h.services.Notebook.GetAll(userID)
 	if err != nil {
@@ -170,7 +182,11 @@ func (h *Handler) notebookUpdate(c *gin.Context) {
 		return
 	}
 
-	userID := getUserId(c)
+	userID, err := getUserId(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, "userCtx is of invalid type")
+		return
+	}
 
 	if err := h.services.Notebook.Update(id, userID, domain.UpdateNotebookInput{
 		Name:        inp.Name,
@@ -208,7 +224,11 @@ func (h *Handler) notebookDelete(c *gin.Context) {
 		return
 	}
 
-	userID := getUserId(c)
+	userID, err := getUserId(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, "userCtx is of invalid type")
+		return
+	}
 
 	if err := h.services.Notebook.DeleteAllNotes(id, userID); err != nil {
 		newResponse(c, http.StatusInternalServerError, err.Error())
