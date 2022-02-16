@@ -155,7 +155,11 @@ func (h *Handler) userRefreshTokens(c *gin.Context) {
 // @Failure default {object} response
 // @Router /auth/logout [post]
 func (h *Handler) userLogout(c *gin.Context) {
-	userID := getUserId(c)
+	userID, err := getUserId(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, "userCtx is of invalid type")
+		return
+	}
 
 	if err := h.services.User.Logout(userID); err != nil {
 		newResponse(c, http.StatusInternalServerError, err.Error())

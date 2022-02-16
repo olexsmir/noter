@@ -34,7 +34,12 @@ func (h *Handler) noteCreate(c *gin.Context) {
 		return
 	}
 
-	userID := getUserId(c)
+	userID, err := getUserId(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, "userCtx is of invalid type")
+		return
+	}
+
 	notebookID := getNotebookID(c)
 
 	if err := h.services.Note.Create(domain.Note{
@@ -108,7 +113,11 @@ func (h *Handler) noteGetByID(c *gin.Context) {
 // @Failure default {object} response
 // @Router /notebook/{notebook_id}/note [get]
 func (h *Handler) noteGetAll(c *gin.Context) {
-	userID := getUserId(c)
+	userID, err := getUserId(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, "userCtx is of invalid type")
+		return
+	}
 	notebookID := getNotebookID(c)
 
 	notes, err := h.services.Note.GetAll(userID, notebookID)
@@ -163,7 +172,11 @@ func (h *Handler) noteUpdate(c *gin.Context) {
 		return
 	}
 
-	userID := getUserId(c)
+	userID, err := getUserId(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, "userCtx is of invalid type")
+		return
+	}
 	notebookID := getNotebookID(c)
 
 	if err := h.services.Note.Update(id, userID, notebookID, domain.UpdateNoteInput{
@@ -199,7 +212,11 @@ func (h *Handler) noteDelete(c *gin.Context) {
 		return
 	}
 
-	userID := getUserId(c)
+	userID, err := getUserId(c)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, "userCtx is of invalid type")
+		return
+	}
 
 	if err := h.services.Note.Delete(id, userID); err != nil {
 		if errors.Is(err, domain.ErrNoteNotFound) {

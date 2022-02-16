@@ -59,14 +59,12 @@ func getNotebookID(c *gin.Context) int {
 	return notebookID
 }
 
-func getUserId(c *gin.Context) int {
+func getUserId(c *gin.Context) (int, error) {
 	id := c.GetString(userCtx)
 	userId, err := strconv.Atoi(id)
 	if err != nil {
-		newResponse(c, http.StatusInternalServerError, "userCtx is of invalid type")
-		c.Abort()
-		return 0
+		return 0, err
 	}
 
-	return userId
+	return userId, nil
 }
