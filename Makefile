@@ -8,7 +8,7 @@ run: build
 	docker-compose up --remove-orphans api
 
 test:
-	go test --short ./...
+	GIN_MODE=release go test --short ./...
 
 test.integration:
 	GIN_MODE=release go test -v ./tests/
