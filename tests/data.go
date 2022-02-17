@@ -8,7 +8,7 @@ import (
 
 var (
 	user = domain.User{
-        ID: 1,
+		ID:          1,
 		Name:        "The test user",
 		Email:       "uniqueTestEmail@test.com",
 		Password:    "the strong password",
@@ -17,7 +17,7 @@ var (
 	}
 
 	notebook = domain.Notebook{
-        ID: 1,
+		ID:          1,
 		AuthorID:    1,
 		Name:        "Notebook for tests",
 		Description: "The test notebook for tests",
@@ -26,7 +26,7 @@ var (
 	}
 
 	note = domain.Note{
-        ID: 1,
+		ID:         1,
 		AuthorID:   1,
 		NotebookID: 1,
 		Pinted:     false,
