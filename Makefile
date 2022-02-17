@@ -10,6 +10,9 @@ run: build
 test:
 	go test --short ./...
 
+test.integration:
+	GIN_MODE=release go test -v ./tests/
+
 lint:
 	golangci-lint run
 
