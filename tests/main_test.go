@@ -143,6 +143,24 @@ func (s *APITestSuite) populateDB() error {
         ALTER TABLE notes ADD notebook_id integer REFERENCES notebooks (id) not null;
         ALTER TABLE notes ADD pinted boolean DEFAULT false;
     `)
+	if err != nil {
+		return err
+	}
+
+	_, err = s.db.NamedExec("INSERT INTO users (name, email, password, registred_at, last_visit_at) VALUES (:name, :email, :password, :registred_at, :last_visit_at)", &user)
+	if err != nil {
+		return err
+	}
+
+	_, err = s.db.NamedExec("INSERT INTO notebooks (author_id, name, description, created_at, updated_at) VALUES (:author_id, :name, :description, :created_at, :updated_at)", &notebook)
+	if err != nil {
+		return err
+	}
+
+	_, err = s.db.NamedExec("INSERT INTO notes (author_id, notebook_id, pinted, title, content, created_at, updated_at) VALUES (:author_id, :notebook_id, :pinted, :title, :content, :created_at, :updated_at)", &note)
+	if err != nil {
+		return err
+	}
 
 	return err
 }
