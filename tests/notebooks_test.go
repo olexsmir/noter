@@ -1,12 +1,15 @@
 package tests
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"time"
 
+	"github.com/flof-ik/noter/internal/domain"
 	"github.com/gin-gonic/gin"
 )
 
@@ -74,4 +77,34 @@ func (s *APITestSuite) TestNotebookGetAll() {
 	s.NoError(err)
 
 	r.NotNil(notebookData)
+}
+
+func (s *APITestSuite) TestNotebookCreate() {
+	router := gin.New()
+	s.handler.Init(router.Group("/api"))
+	r := s.Require()
+
+	userID := 1
+	token, err := s.getJWT(userID)
+	s.NoError(err)
+
+	name, description := "testing notebook", "the testing notebook for test"
+	createData := fmt.Sprintf(`{"name":"%s", "description":"%s"}`, name, description)
+
+	req, _ := http.NewRequest("POST", "/api/v1/notebook/", bytes.NewBuffer([]byte(createData)))
+	req.Header.Set("Content-type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+token)
+
+	resp := httptest.NewRecorder()
+	router.ServeHTTP(resp, req)
+
+	r.Equal(http.StatusCreated, resp.Result().StatusCode)
+
+	var dbNotebook domain.Notebook
+	err = s.db.Get(&dbNotebook, "SELECT * FROM notebooks WHERE name = $1", name)
+	r.NoError(err)
+
+	r.Equal(userID, dbNotebook.AuthorID)
+	r.Equal(name, dbNotebook.Name)
+	r.Equal(description, dbNotebook.Description)
 }
