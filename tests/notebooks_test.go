@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"time"
 
 	"github.com/flof-ik/noter/internal/domain"
@@ -135,4 +136,35 @@ func (s *APITestSuite) TestNotebookUpdate() {
 
 	r.Equal(name, dbNotebook.Name)
 	r.Equal(description, dbNotebook.Description)
+}
+
+func (s *APITestSuite) TestNotebookDelete() {
+	router := gin.New()
+	s.handler.Init(router.Group("/api"))
+	r := s.Require()
+
+	token, err := s.getJWT(1)
+	s.NoError(err)
+
+	var notebookID int
+	err = s.db.QueryRow("INSERT INTO notebooks (author_id, name, description, created_at, updated_at) VALUES ($1, $2, $3, $4, $5) RETURNING id",
+		1, "notebook for tests", "the testing notebook for test", time.Now(), time.Now()).Scan(&notebookID)
+	r.NoError(err)
+
+	idStr := strconv.Itoa(notebookID)
+
+	req, _ := http.NewRequest("DELETE", "/api/v1/notebook/"+idStr, nil)
+	req.Header.Set("Content-type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+token)
+
+	resp := httptest.NewRecorder()
+	router.ServeHTTP(resp, req)
+
+	r.Equal(http.StatusOK, resp.Result().StatusCode)
+
+	var isExists bool
+	err = s.db.QueryRow("SELECT exists(SELECT 1 FROM notebooks WHERE id=$1)", notebookID).Scan(&isExists)
+	r.NoError(err)
+
+	r.Equal(false, isExists)
 }
