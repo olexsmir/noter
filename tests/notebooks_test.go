@@ -14,7 +14,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type notebookResponce struct {
+type notebookResponse struct {
 	ID          int       `json:"id"`
 	AuthorID    int       `json:"author_id"`
 	Name        string    `json:"name"`
@@ -43,7 +43,7 @@ func (s *APITestSuite) TestNotebookGetByID() {
 	respData, err := ioutil.ReadAll(resp.Body)
 	s.NoError(err)
 
-	var notebookData notebookResponce
+	var notebookData notebookResponse
 	err = json.Unmarshal(respData, &notebookData)
 	s.NoError(err)
 
@@ -73,7 +73,7 @@ func (s *APITestSuite) TestNotebookGetAll() {
 	respData, err := ioutil.ReadAll(resp.Body)
 	s.NoError(err)
 
-	var notebookData []notebookResponce
+	var notebookData []notebookResponse
 	err = json.Unmarshal(respData, &notebookData)
 	s.NoError(err)
 
