@@ -62,6 +62,7 @@ issues:
         - goerr113
         - gosec
         - noctx
+        - unparam
     - path: (internal/transport/rest)
       linters:
         - godot
