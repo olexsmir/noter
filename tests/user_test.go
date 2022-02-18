@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"time"
 
 	"github.com/flof-ik/noter/internal/domain"
@@ -60,4 +61,10 @@ func (s *APITestSuite) TestUserSignIn() {
 	router.ServeHTTP(resp, req)
 
 	s.Equal(http.StatusOK, resp.Result().StatusCode)
+}
+
+func (s *APITestSuite) getJWT(userID int) (string, error) {
+	id := strconv.Itoa(userID)
+
+	return s.tokenManager.NewJWT(id, time.Hour)
 }
