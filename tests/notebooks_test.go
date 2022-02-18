@@ -108,3 +108,31 @@ func (s *APITestSuite) TestNotebookCreate() {
 	r.Equal(name, dbNotebook.Name)
 	r.Equal(description, dbNotebook.Description)
 }
+
+func (s *APITestSuite) TestNotebookUpdate() {
+	router := gin.New()
+	s.handler.Init(router.Group("/api"))
+	r := s.Require()
+
+	token, err := s.getJWT(1)
+	s.NoError(err)
+
+	name, description := "the new name", "the new testing notebook description"
+	updateData := fmt.Sprintf(`{"name":"%s", "description":"%s"}`, name, description)
+
+	req, _ := http.NewRequest("PUT", "/api/v1/notebook/1", bytes.NewBuffer([]byte(updateData)))
+	req.Header.Set("Content-type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+token)
+
+	resp := httptest.NewRecorder()
+	router.ServeHTTP(resp, req)
+
+	r.Equal(http.StatusOK, resp.Result().StatusCode)
+
+	var dbNotebook domain.Notebook
+	err = s.db.Get(&dbNotebook, "SELECT * FROM notebooks WHERE name = $1", name)
+	r.NoError(err)
+
+	r.Equal(name, dbNotebook.Name)
+	r.Equal(description, dbNotebook.Description)
+}
