@@ -38,7 +38,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user-auth"
+                    "auth"
                 ],
                 "summary": "User logout",
                 "responses": {
@@ -76,7 +76,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user-auth"
+                    "auth"
                 ],
                 "summary": "User Refresh Tokens",
                 "parameters": [
@@ -128,7 +128,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user-auth"
+                    "auth"
                 ],
                 "summary": "User SignIn",
                 "parameters": [
@@ -180,7 +180,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user-auth"
+                    "auth"
                 ],
                 "summary": "User SignUp",
                 "parameters": [

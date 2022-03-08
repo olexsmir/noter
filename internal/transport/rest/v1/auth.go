@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (h *Handler) initUsersRoutes(api *gin.RouterGroup) {
+func (h *Handler) initAuthRoutes(api *gin.RouterGroup) {
 	user := api.Group("/auth")
 	{
 		user.POST("/sign-up", h.userSignUp)
@@ -29,7 +29,7 @@ type userSignUpInput struct {
 }
 
 // @Summary User SignUp
-// @Tags user-auth
+// @Tags auth
 // @Description create user account
 // @ModuleID userSignUp
 // @Accept json
@@ -69,9 +69,9 @@ type userSignInInput struct {
 }
 
 // @Summary User SignIn
-// @Tags user-auth
+// @Tags auth
 // @Description user sign in
-// @ModuleID authSignIn
+// @ModuleID userSignIn
 // @Accept json
 // @Produce json
 // @Param input body userSignInInput true "sign up info"
@@ -111,7 +111,7 @@ type userRefreshTokensInput struct {
 }
 
 // @Summary User Refresh Tokens
-// @Tags user-auth
+// @Tags auth
 // @Description user refresh tokens
 // @Accept json
 // @Produce json
@@ -146,7 +146,7 @@ func (h *Handler) userRefreshTokens(c *gin.Context) {
 
 // @Summary User logout
 // @Security user-auth
-// @Tags user-auth
+// @Tags auth
 // @Description user logout
 // @Accept json
 // @Produce json

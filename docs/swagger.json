@@ -24,7 +24,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "user-auth"
+                    "auth"
                 ],
                 "summary": "User logout",
                 "responses": {
@@ -62,7 +62,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "user-auth"
+                    "auth"
                 ],
                 "summary": "User Refresh Tokens",
                 "parameters": [
@@ -114,7 +114,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "user-auth"
+                    "auth"
                 ],
                 "summary": "User SignIn",
                 "parameters": [
@@ -166,7 +166,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "user-auth"
+                    "auth"
                 ],
                 "summary": "User SignUp",
                 "parameters": [

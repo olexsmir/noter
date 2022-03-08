@@ -142,7 +142,7 @@ paths:
       - user-auth: []
       summary: User logout
       tags:
-      - user-auth
+      - auth
   /auth/refresh-tokens:
     post:
       consumes:
@@ -176,7 +176,7 @@ paths:
             $ref: '#/definitions/v1.response'
       summary: User Refresh Tokens
       tags:
-      - user-auth
+      - auth
   /auth/sign-in:
     post:
       consumes:
@@ -210,7 +210,7 @@ paths:
             $ref: '#/definitions/v1.response'
       summary: User SignIn
       tags:
-      - user-auth
+      - auth
   /auth/sign-up:
     post:
       consumes:
@@ -242,7 +242,7 @@ paths:
             $ref: '#/definitions/v1.response'
       summary: User SignUp
       tags:
-      - user-auth
+      - auth
   /notebook:
     get:
       consumes:
