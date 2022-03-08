@@ -21,7 +21,7 @@ func NewHandler(services *service.Services, tokenManager token.TokenManager) *Ha
 func (h *Handler) Init(api *gin.RouterGroup) {
 	v1 := api.Group("/v1")
 	{
-		h.initUsersRoutes(v1)
+		h.initAuthRoutes(v1)
 		h.initNotebooksRoutes(v1)
 	}
 }
