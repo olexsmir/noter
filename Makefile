@@ -5,7 +5,7 @@ build:
 	CGO_ENABLED=0 GOOS=linux go build -o .bin/api cmd/main.go	
 
 run: build
-	docker-compose up --remove-orphans api
+	docker-compose up --remove-orphans backend
 
 test:
 	go test --short ./...
