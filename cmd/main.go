@@ -11,7 +11,6 @@ import (
 
 	"github.com/flof-ik/noter/internal/config"
 	"github.com/flof-ik/noter/internal/repository"
-	"github.com/flof-ik/noter/internal/server"
 	"github.com/flof-ik/noter/internal/service"
 	"github.com/flof-ik/noter/internal/transport/rest"
 	"github.com/flof-ik/noter/pkg/cache"
@@ -70,7 +69,7 @@ func main() {
 	handlers := rest.NewHandler(services, tokenManager)
 
 	// Server
-	srv := server.NewServer(cfg, handlers.InitRoutes(cfg))
+	srv := rest.NewServer(cfg, handlers.InitRoutes(cfg))
 	go func() {
 		if err := srv.Start(); !errors.Is(err, http.ErrServerClosed) {
 			logger.Error(err)
