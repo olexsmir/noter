@@ -32,6 +32,7 @@ func (s *NotesService) Create(input domain.Note) error {
 }
 
 func (s *NotesService) GetByID(id int) (domain.Note, error) {
+	//nolint:nilerr
 	if v, err := s.cache.Get(id); err == nil {
 		return v.(domain.Note), err
 	}
