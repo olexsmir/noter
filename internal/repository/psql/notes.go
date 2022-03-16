@@ -63,7 +63,7 @@ func (r *NotesRepo) Update(id, authorID, notebookID int, inp domain.UpdateNoteIn
 	}
 
 	if count == 0 {
-		return domain.ErrNotebookNotFound
+		return domain.ErrNoteNotFound
 	}
 
 	return err
@@ -81,7 +81,7 @@ func (r *NotesRepo) Delete(id, authorID int) error {
 	}
 
 	if count == 0 {
-		return domain.ErrNotebookNotFound
+		return domain.ErrNoteNotFound
 	}
 
 	return err

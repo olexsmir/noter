@@ -199,6 +199,11 @@ func (h *Handler) noteUpdate(c *gin.Context) {
 		Pinted:    inp.Pinted,
 		UpdatedAt: time.Now(),
 	}); err != nil {
+		if errors.Is(err, domain.ErrNoteNotFound) {
+			newResponse(c, http.StatusNotFound, err.Error())
+			return
+		}
+
 		newResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
