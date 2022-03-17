@@ -218,7 +218,7 @@ func (h *Handler) notebookUpdate(c *gin.Context) {
 // @Router /notebook/{id} [delete]
 func (h *Handler) notebookDelete(c *gin.Context) {
 	idParam := c.Param("notebook_id")
-	id, err := strconv.Atoi(idParam)
+	notebookID, err := strconv.Atoi(idParam)
 	if err != nil {
 		newResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -230,12 +230,12 @@ func (h *Handler) notebookDelete(c *gin.Context) {
 		return
 	}
 
-	if err := h.services.Notebook.DeleteAllNotes(id, userID); err != nil {
+	if err := h.services.Note.DeleteAll(notebookID, userID); err != nil {
 		newResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	if err := h.services.Notebook.Delete(id, userID); err != nil {
+	if err := h.services.Notebook.Delete(notebookID, userID); err != nil {
 		if errors.Is(err, domain.ErrNotebookNotFound) {
 			newResponse(c, http.StatusNotFound, err.Error())
 			return

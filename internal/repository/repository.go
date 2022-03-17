@@ -22,6 +22,7 @@ type Notes interface {
 	GetAll(authorID, notebookID int) ([]domain.Note, error)
 	Update(id, authorID, notebookID int, inp domain.UpdateNoteInput) error
 	Delete(id, authorID int) error
+	DeleteAll(notebookID, authorID int) error
 }
 
 type Notebooks interface {
@@ -30,7 +31,6 @@ type Notebooks interface {
 	GetById(id, authorID int) (domain.Notebook, error)
 	Update(id, authorID int, inp domain.UpdateNotebookInput) error
 	Delete(id, authorID int) error
-	DeleteAllNotes(id, authorID int) error
 }
 
 type Repositorys struct {
