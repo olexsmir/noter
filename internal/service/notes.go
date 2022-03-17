@@ -67,3 +67,7 @@ func (s *NotesService) Update(id, authorID, notebookID int, inp domain.UpdateNot
 func (s *NotesService) Delete(id, authorId int) error {
 	return s.repo.Delete(id, authorId)
 }
+
+func (s *NotesService) DeleteAll(notebookID, userID int) error {
+	return s.repo.DeleteAll(notebookID, userID)
+}

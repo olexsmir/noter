@@ -86,3 +86,10 @@ func (r *NotesRepo) Delete(id, authorID int) error {
 
 	return err
 }
+
+func (r *NotesRepo) DeleteAll(notebookID, authorID int) error {
+	_, err := r.db.Exec("DELETE FROM notes WHERE notebook_id=$1 AND author_id=$2",
+		notebookID, authorID)
+
+	return err
+}
