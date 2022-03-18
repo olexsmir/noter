@@ -15,19 +15,15 @@ func (h *Handler) initNotebooksRoutes(api *gin.RouterGroup) {
 	{
 		authenticated := notebooks.Group("/", h.userIdentity)
 		{
-			authenticated.POST("/", h.notebooksCreate)
 			authenticated.GET("/", h.notebookGetAll)
 			authenticated.GET("/:notebook_id", h.notebookGetById)
+			authenticated.POST("/", h.notebooksCreate)
 			authenticated.PUT("/:notebook_id", h.notebookUpdate)
 			authenticated.DELETE("/:notebook_id", h.notebookDelete)
 
-			notes := notebooks.Group("/:notebook_id/note", h.userIdentity, h.setNotebookCtx)
+			notes := authenticated.Group("/:notebook_id")
 			{
-				notes.POST("/", h.noteCreate)
-				notes.GET("/", h.noteGetAll)
-				notes.GET("/:id", h.noteGetByID)
-				notes.PUT("/:id", h.noteUpdate)
-				notes.DELETE("/:id", h.noteDelete)
+				h.initNotesRoutes(notes)
 			}
 		}
 	}

@@ -10,6 +10,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func (h *Handler) initNotesRoutes(api *gin.RouterGroup) {
+	notes := api.Group("/note", h.setNotebookCtx)
+	{
+		notes.GET("/", h.noteGetAll)
+		notes.GET("/:id", h.noteGetByID)
+		notes.POST("/", h.noteCreate)
+		notes.PUT("/:id", h.noteUpdate)
+		notes.DELETE("/:id", h.noteDelete)
+	}
+}
+
 type noteCreateInput struct {
 	Title   string `json:"title" binding:"required,min=12"`
 	Content string `json:"content" binding:"required,min=24"`
