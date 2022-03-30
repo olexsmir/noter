@@ -9,22 +9,46 @@ import (
 var ErrItemNotFound = errors.New("item not found")
 
 type item struct {
-	value     interface{}
+	value     any
 	createdAt int64
 	ttl       int64
 }
 
 type MemoryCache struct {
-	cache map[interface{}]*item
 	sync.RWMutex
+	cache map[any]*item
 }
 
 // NewMemoryCache uses map to store key:value data in-memory
 func NewMemoryCache() *MemoryCache {
-	c := &MemoryCache{cache: make(map[interface{}]*item)}
+	c := &MemoryCache{cache: make(map[any]*item)}
 	go c.setTtlTimer()
 
 	return c
+}
+
+func (c *MemoryCache) Set(key, value any, ttl int64) error {
+	c.Lock()
+	c.cache[key] = &item{
+		value:     value,
+		createdAt: time.Now().Unix(),
+		ttl:       ttl,
+	}
+	c.Unlock()
+
+	return nil
+}
+
+func (c *MemoryCache) Get(key any) (any, error) {
+	c.RLock()
+	item, ex := c.cache[key]
+	c.RUnlock()
+
+	if !ex {
+		return nil, ErrItemNotFound
+	}
+
+	return item.value, nil
 }
 
 func (c *MemoryCache) setTtlTimer() {
@@ -39,29 +63,4 @@ func (c *MemoryCache) setTtlTimer() {
 
 		<-time.After(time.Second)
 	}
-}
-
-func (c *MemoryCache) Set(key, value interface{}, ttl int64) error {
-	c.Lock()
-	c.cache[key] = &item{
-		value:     value,
-		createdAt: time.Now().Unix(),
-		ttl:       ttl,
-	}
-
-	c.Unlock()
-
-	return nil
-}
-
-func (c *MemoryCache) Get(key interface{}) (interface{}, error) {
-	c.RLock()
-	item, ex := c.cache[key]
-	c.RUnlock()
-
-	if !ex {
-		return nil, ErrItemNotFound
-	}
-
-	return item.value, nil
 }
