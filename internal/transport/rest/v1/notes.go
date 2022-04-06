@@ -140,7 +140,14 @@ func (h *Handler) noteGetAll(c *gin.Context) {
 		return
 	}
 
-	notes, err := h.services.Note.GetAll(userID, notebookID)
+	page := c.DefaultQuery("page", "1")
+	pageNumber, err := strconv.Atoi(page)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	notes, err := h.services.Note.GetAll(userID, notebookID, pageNumber)
 	if err != nil {
 		if errors.Is(err, domain.ErrNoteNotFound) {
 			newResponse(c, http.StatusNotFound, err.Error())

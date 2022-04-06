@@ -32,10 +32,15 @@ func (r *NotesRepo) GetByID(id int) (domain.Note, error) {
 	return note, err
 }
 
-func (r *NotesRepo) GetAll(authorID, notebookID int) ([]domain.Note, error) {
+func (r *NotesRepo) GetAll(authorID, notebookID, pageNumber int) ([]domain.Note, error) {
+	pageSize := 10
+
 	var notes []domain.Note
-	err := r.db.Select(&notes, "SELECT * FROM notes WHERE author_id=$1 AND notebook_id=$2",
-		authorID, notebookID)
+	err := r.db.Select(&notes, `
+		SELECT * FROM notes
+		WHERE author_id=$1 AND notebook_id=$2
+		LIMIT $3 OFFSET $4`,
+		authorID, notebookID, pageSize, pageSize*pageNumber-10)
 
 	if errors.Is(err, sql.ErrNoRows) {
 		return nil, domain.ErrNoteNotFound
