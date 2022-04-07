@@ -39,10 +39,10 @@ type Repositorys struct {
 	Notebook Notebooks
 }
 
-func NewRepositorys(db *sqlx.DB) *Repositorys {
+func NewRepositorys(db *sqlx.DB, pageSize int) *Repositorys {
 	return &Repositorys{
 		User:     psql.NewUsersRepo(db),
-		Note:     psql.NewNotesRepo(db),
+		Note:     psql.NewNotesRepo(db, pageSize),
 		Notebook: psql.NewNotebooksRepo(db),
 	}
 }
