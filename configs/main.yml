@@ -1,8 +1,8 @@
 http:
   port: 8000
-  maxHeaderBytes: 1
-  readTimeout: 10s
-  writeTimeout: 10s
+  max_header_bytes: 1
+  read_timeout: 10s
+  write_timeout: 10s
 
 cache:
   ttl: 3600s
@@ -15,5 +15,5 @@ pagination:
   page_size: 100
 
 jwt:
-  accessTokenTTL: 2h
-  refreshTokenTTL: 720h #30 days
+  access_token_ttl: 2h
+  refresh_token_ttl: 720h # 30 days
