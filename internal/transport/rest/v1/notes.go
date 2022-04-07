@@ -124,6 +124,7 @@ func (h *Handler) noteGetByID(c *gin.Context) {
 // @Success 200 {object} []domain.Note
 // @Param notebook_id path string true "notebook_id"
 // @Param id path string true "id"
+// @Param page query integer 1 "page"
 // @Failure 400,401,404,500 {object} response
 // @Failure default {object} response
 // @Router /notebook/{notebook_id}/note [get]

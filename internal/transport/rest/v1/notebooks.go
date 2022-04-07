@@ -125,6 +125,7 @@ func (h *Handler) notebookGetById(c *gin.Context) {
 // @Success 200 {object} []domain.Notebook
 // @Failure 400,401,404,500 {object} response
 // @Failure default {object} response
+// @Param page query integer 1 "page"
 // @Router /notebook [get]
 func (h *Handler) notebookGetAll(c *gin.Context) {
 	userID, err := getUserId(c)
