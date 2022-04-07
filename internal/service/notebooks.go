@@ -25,8 +25,8 @@ func (s *NotebooksService) Create(input domain.Notebook) error {
 	})
 }
 
-func (s *NotebooksService) GetAll(userID int) ([]domain.Notebook, error) {
-	return s.repo.GetAll(userID)
+func (s *NotebooksService) GetAll(userID, page int) ([]domain.Notebook, error) {
+	return s.repo.GetAll(userID, page)
 }
 
 func (s *NotebooksService) GetById(id, userID int) (domain.Notebook, error) {

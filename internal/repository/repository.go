@@ -27,7 +27,7 @@ type Notes interface {
 
 type Notebooks interface {
 	Create(notebook domain.Notebook) error
-	GetAll(userId int) ([]domain.Notebook, error)
+	GetAll(authorID, pageNumber int) ([]domain.Notebook, error)
 	GetById(id, authorID int) (domain.Notebook, error)
 	Update(id, authorID int, inp domain.UpdateNotebookInput) error
 	Delete(id, authorID int) error
@@ -43,6 +43,6 @@ func NewRepositorys(db *sqlx.DB, pageSize int) *Repositorys {
 	return &Repositorys{
 		User:     psql.NewUsersRepo(db),
 		Note:     psql.NewNotesRepo(db, pageSize),
-		Notebook: psql.NewNotebooksRepo(db),
+		Notebook: psql.NewNotebooksRepo(db, pageSize),
 	}
 }
