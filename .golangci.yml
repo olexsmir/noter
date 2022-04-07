@@ -35,7 +35,7 @@ linters:
     - whitespace
     - durationcheck
     - forbidigo
-    - forcetypeassert
+    # - forcetypeassert
     - ifshort
     - importas
     - nilerr
