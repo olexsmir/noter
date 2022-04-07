@@ -11,6 +11,9 @@ postgres:
   dbname: noter
   sslmode: disable
 
+pagination:
+  page_size: 100
+
 jwt:
   accessTokenTTL: 2h
   refreshTokenTTL: 720h #30 days

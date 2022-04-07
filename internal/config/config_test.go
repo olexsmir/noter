@@ -63,6 +63,9 @@ func TestNew(t *testing.T) {
 					MaxHeaderMegabytes: 1,
 					WriteTimeout:       time.Second * 10,
 				},
+				Pagination: PaginationConfig{
+					PageSize: 10,
+				},
 				Postgres: PostgresConfig{
 					Host:     "localhost",
 					Port:     "5432",
