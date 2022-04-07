@@ -172,18 +172,18 @@ func (mr *MockNotesMockRecorder) DeleteAll(notebookID, authorID interface{}) *go
 }
 
 // GetAll mocks base method.
-func (m *MockNotes) GetAll(authorID, notebookID int) ([]domain.Note, error) {
+func (m *MockNotes) GetAll(authorID, notebookID, pageNumber int) ([]domain.Note, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAll", authorID, notebookID)
+	ret := m.ctrl.Call(m, "GetAll", authorID, notebookID, pageNumber)
 	ret0, _ := ret[0].([]domain.Note)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetAll indicates an expected call of GetAll.
-func (mr *MockNotesMockRecorder) GetAll(authorID, notebookID interface{}) *gomock.Call {
+func (mr *MockNotesMockRecorder) GetAll(authorID, notebookID, pageNumber interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAll", reflect.TypeOf((*MockNotes)(nil).GetAll), authorID, notebookID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAll", reflect.TypeOf((*MockNotes)(nil).GetAll), authorID, notebookID, pageNumber)
 }
 
 // GetByID mocks base method.
@@ -267,18 +267,18 @@ func (mr *MockNotebooksMockRecorder) Delete(id, authorID interface{}) *gomock.Ca
 }
 
 // GetAll mocks base method.
-func (m *MockNotebooks) GetAll(userId int) ([]domain.Notebook, error) {
+func (m *MockNotebooks) GetAll(authorID, pageNumber int) ([]domain.Notebook, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAll", userId)
+	ret := m.ctrl.Call(m, "GetAll", authorID, pageNumber)
 	ret0, _ := ret[0].([]domain.Notebook)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetAll indicates an expected call of GetAll.
-func (mr *MockNotebooksMockRecorder) GetAll(userId interface{}) *gomock.Call {
+func (mr *MockNotebooksMockRecorder) GetAll(authorID, pageNumber interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAll", reflect.TypeOf((*MockNotebooks)(nil).GetAll), userId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAll", reflect.TypeOf((*MockNotebooks)(nil).GetAll), authorID, pageNumber)
 }
 
 // GetById mocks base method.
