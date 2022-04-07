@@ -9,10 +9,16 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-type NotebooksRepo struct{ db *sqlx.DB }
+type NotebooksRepo struct {
+	db       *sqlx.DB
+	pageSize int
+}
 
-func NewNotebooksRepo(db *sqlx.DB) *NotebooksRepo {
-	return &NotebooksRepo{db}
+func NewNotebooksRepo(db *sqlx.DB, pageSize int) *NotebooksRepo {
+	return &NotebooksRepo{
+		db:       db,
+		pageSize: pageSize,
+	}
 }
 
 func (r *NotebooksRepo) Create(notebook domain.Notebook) error {
@@ -26,9 +32,16 @@ func (r *NotebooksRepo) Create(notebook domain.Notebook) error {
 	return err
 }
 
-func (r *NotebooksRepo) GetAll(authorID int) ([]domain.Notebook, error) {
+func (r *NotebooksRepo) GetAll(authorID, pageNumber int) ([]domain.Notebook, error) {
+	offset := (pageNumber * r.pageSize) - r.pageSize
+
 	var notebooks []domain.Notebook
-	err := r.db.Select(&notebooks, "SELECT * FROM notebooks WHERE author_id=$1", authorID)
+	err := r.db.Select(&notebooks, `
+		SELECT * FROM notebooks
+		WHERE author_id=$1
+		ORDER BY id ASC
+		LIMIT $2 OFFSET $3`,
+		authorID, r.pageSize, offset)
 
 	if errors.Is(err, sql.ErrNoRows) {
 		return nil, domain.ErrNotebookNotFound

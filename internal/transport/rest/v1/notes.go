@@ -124,6 +124,7 @@ func (h *Handler) noteGetByID(c *gin.Context) {
 // @Success 200 {object} []domain.Note
 // @Param notebook_id path string true "notebook_id"
 // @Param id path string true "id"
+// @Param page query integer 1 "page"
 // @Failure 400,401,404,500 {object} response
 // @Failure default {object} response
 // @Router /notebook/{notebook_id}/note [get]
@@ -140,7 +141,14 @@ func (h *Handler) noteGetAll(c *gin.Context) {
 		return
 	}
 
-	notes, err := h.services.Note.GetAll(userID, notebookID)
+	page := c.DefaultQuery("page", "1")
+	pageNumber, err := strconv.Atoi(page)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	notes, err := h.services.Note.GetAll(userID, notebookID, pageNumber)
 	if err != nil {
 		if errors.Is(err, domain.ErrNoteNotFound) {
 			newResponse(c, http.StatusNotFound, err.Error())

@@ -13,6 +13,7 @@ const (
 	defaultHTTPMaxHeaderMegabytes = 1
 	defaultAccessTokenTTL         = 15 * time.Minute
 	defaultRefreshTokenTTL        = 24 * time.Hour * 30
+	defaultPageSize               = 100
 
 	EnvLocal = "local"
 	Prod     = "prod"
@@ -22,6 +23,7 @@ type Config struct {
 	Environment string
 	HTTP        HTTPConfig
 	Postgres    PostgresConfig
+	Pagination  PaginationConfig
 	Auth        AuthConfig
 	CacheTTL    time.Duration `mapstructure:"ttl"`
 }
@@ -41,6 +43,10 @@ type PostgresConfig struct {
 	Password string
 	DBName   string `mapstructure:"dbname"`
 	SSLMode  string `mapstructure:"sslmode"`
+}
+
+type PaginationConfig struct {
+	PageSize int `mapstructure:"page_size"`
 }
 
 type AuthConfig struct {
@@ -96,6 +102,10 @@ func unmarshal(cfg *Config) error {
 		return err
 	}
 
+	if err := viper.UnmarshalKey("pagination", &cfg.Pagination); err != nil {
+		return err
+	}
+
 	if err := viper.UnmarshalKey("jwt", &cfg.Auth.JWT); err != nil {
 		return err
 	}
@@ -127,4 +137,5 @@ func populateDefaults() {
 	viper.SetDefault("http.timeouts.write", defaultHTTPRWTimeout)
 	viper.SetDefault("auth.accessTokenTTL", defaultAccessTokenTTL)
 	viper.SetDefault("auth.refreshTokenTTL", defaultRefreshTokenTTL)
+	viper.SetDefault("pagination.page_size", defaultPageSize)
 }

@@ -56,7 +56,7 @@ func main() {
 	}
 
 	memCache := cache.NewMemoryCache()
-	repos := repository.NewRepositorys(db)
+	repos := repository.NewRepositorys(db, cfg.Pagination.PageSize)
 	services := service.NewServices(service.Deps{
 		Repos:           repos,
 		Hasher:          hasher,

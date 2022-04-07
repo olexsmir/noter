@@ -47,8 +47,8 @@ func (s *NotesService) GetByID(id int) (domain.Note, error) {
 	return note, err
 }
 
-func (s *NotesService) GetAll(authorID, notebookID int) ([]domain.Note, error) {
-	return s.repo.GetAll(authorID, notebookID)
+func (s *NotesService) GetAll(authorID, notebookID, page int) ([]domain.Note, error) {
+	return s.repo.GetAll(authorID, notebookID, page)
 }
 
 func (s *NotesService) Update(id, authorID, notebookID int, inp domain.UpdateNoteInput) error {

@@ -22,7 +22,7 @@ type Users interface {
 type Notes interface {
 	Create(input domain.Note) error
 	GetByID(id int) (domain.Note, error)
-	GetAll(authorID, notebookID int) ([]domain.Note, error)
+	GetAll(authorID, notebookID, page int) ([]domain.Note, error)
 	Update(id, authorID, notebookID int, inp domain.UpdateNoteInput) error
 	Delete(id, authorID int) error
 	DeleteAll(notebookID, userID int) error
@@ -30,7 +30,7 @@ type Notes interface {
 
 type Notebooks interface {
 	Create(input domain.Notebook) error
-	GetAll(userID int) ([]domain.Notebook, error)
+	GetAll(userID, page int) ([]domain.Notebook, error)
 	GetById(id, userID int) (domain.Notebook, error)
 	Update(id, userID int, inp domain.UpdateNotebookInput) error
 	Delete(id, userID int) error

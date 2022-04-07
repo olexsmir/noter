@@ -248,6 +248,11 @@ paths:
       consumes:
       - application/json
       description: get all notebooks
+      parameters:
+      - description: page
+        in: query
+        name: page
+        type: integer
       produces:
       - application/json
       responses:
@@ -468,6 +473,10 @@ paths:
         name: id
         required: true
         type: string
+      - description: page
+        in: query
+        name: page
+        type: integer
       produces:
       - application/json
       responses:

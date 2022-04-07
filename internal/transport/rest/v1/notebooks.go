@@ -125,6 +125,7 @@ func (h *Handler) notebookGetById(c *gin.Context) {
 // @Success 200 {object} []domain.Notebook
 // @Failure 400,401,404,500 {object} response
 // @Failure default {object} response
+// @Param page query integer 1 "page"
 // @Router /notebook [get]
 func (h *Handler) notebookGetAll(c *gin.Context) {
 	userID, err := getUserId(c)
@@ -133,7 +134,14 @@ func (h *Handler) notebookGetAll(c *gin.Context) {
 		return
 	}
 
-	notebooks, err := h.services.Notebook.GetAll(userID)
+	page := c.DefaultQuery("page", "1")
+	pageNumber, err := strconv.Atoi(page)
+	if err != nil {
+		newResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	notebooks, err := h.services.Notebook.GetAll(userID, pageNumber)
 	if err != nil {
 		if errors.Is(err, domain.ErrNotebookNotFound) {
 			newResponse(c, http.StatusNotFound, err.Error())

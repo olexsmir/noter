@@ -158,18 +158,18 @@ func (mr *MockNotesMockRecorder) DeleteAll(notebookID, userID interface{}) *gomo
 }
 
 // GetAll mocks base method.
-func (m *MockNotes) GetAll(authorID, notebookID int) ([]domain.Note, error) {
+func (m *MockNotes) GetAll(authorID, notebookID, page int) ([]domain.Note, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAll", authorID, notebookID)
+	ret := m.ctrl.Call(m, "GetAll", authorID, notebookID, page)
 	ret0, _ := ret[0].([]domain.Note)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetAll indicates an expected call of GetAll.
-func (mr *MockNotesMockRecorder) GetAll(authorID, notebookID interface{}) *gomock.Call {
+func (mr *MockNotesMockRecorder) GetAll(authorID, notebookID, page interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAll", reflect.TypeOf((*MockNotes)(nil).GetAll), authorID, notebookID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAll", reflect.TypeOf((*MockNotes)(nil).GetAll), authorID, notebookID, page)
 }
 
 // GetByID mocks base method.
@@ -253,18 +253,18 @@ func (mr *MockNotebooksMockRecorder) Delete(id, userID interface{}) *gomock.Call
 }
 
 // GetAll mocks base method.
-func (m *MockNotebooks) GetAll(userID int) ([]domain.Notebook, error) {
+func (m *MockNotebooks) GetAll(userID, page int) ([]domain.Notebook, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAll", userID)
+	ret := m.ctrl.Call(m, "GetAll", userID, page)
 	ret0, _ := ret[0].([]domain.Notebook)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetAll indicates an expected call of GetAll.
-func (mr *MockNotebooksMockRecorder) GetAll(userID interface{}) *gomock.Call {
+func (mr *MockNotebooksMockRecorder) GetAll(userID, page interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAll", reflect.TypeOf((*MockNotebooks)(nil).GetAll), userID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAll", reflect.TypeOf((*MockNotebooks)(nil).GetAll), userID, page)
 }
 
 // GetById mocks base method.

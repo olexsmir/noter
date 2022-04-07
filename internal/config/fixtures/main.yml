@@ -8,6 +8,9 @@ http:
 cache:
   ttl: 3600s
 
+pagination:
+  page_size: 10
+
 postgres:
   dbname: test_db
   sslmode: disable
