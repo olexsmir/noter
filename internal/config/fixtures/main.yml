@@ -1,9 +1,9 @@
 http:
   host: "localhost"
   port: 80
-  maxHeaderBytes: 1
-  readTimeout: 10s
-  writeTimeout: 10s
+  max_header_bytes: 1
+  read_timeout: 10s
+  write_timeout: 10s
 
 cache:
   ttl: 3600s
@@ -16,5 +16,5 @@ postgres:
   sslmode: disable
 
 jwt:
-  accessTokenTTL: 15m
-  refreshTokenTTL: 24h
+  access_token_ttl: 15m
+  refresh_token_ttl: 24h

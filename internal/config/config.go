@@ -31,9 +31,9 @@ type Config struct {
 type HTTPConfig struct {
 	Host               string        `mapstructure:"host"`
 	Port               string        `mapstructure:"port"`
-	ReadTimeout        time.Duration `mapstructure:"readTimeout"`
-	WriteTimeout       time.Duration `mapstructure:"writeTimeout"`
-	MaxHeaderMegabytes int           `mapstructure:"maxHeaderBytes"`
+	ReadTimeout        time.Duration `mapstructure:"read_timeout"`
+	WriteTimeout       time.Duration `mapstructure:"write_timeout"`
+	MaxHeaderMegabytes int           `mapstructure:"max_header_bytes"`
 }
 
 type PostgresConfig struct {
@@ -55,8 +55,8 @@ type AuthConfig struct {
 }
 
 type JWTConfig struct {
-	AccessTokenTTL  time.Duration `mapstructure:"accessTokenTTL"`
-	RefreshTokenTTL time.Duration `mapstructure:"refreshTokenTTL"`
+	AccessTokenTTL  time.Duration `mapstructure:"access_token_ttl"`
+	RefreshTokenTTL time.Duration `mapstructure:"refresh_token_ttl"`
 	SigningKey      string
 }
 
@@ -133,9 +133,9 @@ func readConfigFile(configDir string, env string) error {
 func populateDefaults() {
 	viper.SetDefault("http.port", defaultHTTPPort)
 	viper.SetDefault("http.max_header_megabytes", defaultHTTPMaxHeaderMegabytes)
-	viper.SetDefault("http.timeouts.read", defaultHTTPRWTimeout)
-	viper.SetDefault("http.timeouts.write", defaultHTTPRWTimeout)
-	viper.SetDefault("auth.accessTokenTTL", defaultAccessTokenTTL)
-	viper.SetDefault("auth.refreshTokenTTL", defaultRefreshTokenTTL)
+	viper.SetDefault("http.read_timeout", defaultHTTPRWTimeout)
+	viper.SetDefault("http.write_timeout", defaultHTTPRWTimeout)
+	viper.SetDefault("auth.access_token_ttl", defaultAccessTokenTTL)
+	viper.SetDefault("auth.refresh_token_ttl", defaultRefreshTokenTTL)
 	viper.SetDefault("pagination.page_size", defaultPageSize)
 }
