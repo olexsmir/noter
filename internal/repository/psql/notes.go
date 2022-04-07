@@ -5,7 +5,6 @@ import (
 	"errors"
 
 	"github.com/flof-ik/noter/internal/domain"
-	"github.com/flof-ik/noter/pkg/logger"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -41,7 +40,6 @@ func (r *NotesRepo) GetByID(id int) (domain.Note, error) {
 
 func (r *NotesRepo) GetAll(authorID, notebookID, pageNumber int) ([]domain.Note, error) {
 	offset := (pageNumber * r.pageSize) - r.pageSize
-	logger.Error(offset)
 
 	var notes []domain.Note
 	err := r.db.Select(&notes, `
