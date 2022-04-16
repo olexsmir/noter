@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"errors"
 
-	"github.com/flof-ik/noter/internal/domain"
-	"github.com/flof-ik/noter/pkg/database"
 	"github.com/jmoiron/sqlx"
+	"github.com/olexsmir/noter/internal/domain"
+	"github.com/olexsmir/noter/pkg/database"
 )
 
 type NotebooksRepo struct {

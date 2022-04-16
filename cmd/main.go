@@ -9,15 +9,15 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/flof-ik/noter/internal/config"
-	"github.com/flof-ik/noter/internal/repository"
-	"github.com/flof-ik/noter/internal/service"
-	"github.com/flof-ik/noter/internal/transport/rest"
-	"github.com/flof-ik/noter/pkg/cache"
-	"github.com/flof-ik/noter/pkg/database"
-	"github.com/flof-ik/noter/pkg/hash"
-	"github.com/flof-ik/noter/pkg/logger"
-	"github.com/flof-ik/noter/pkg/token"
+	"github.com/olexsmir/noter/internal/config"
+	"github.com/olexsmir/noter/internal/repository"
+	"github.com/olexsmir/noter/internal/service"
+	"github.com/olexsmir/noter/internal/transport/rest"
+	"github.com/olexsmir/noter/pkg/cache"
+	"github.com/olexsmir/noter/pkg/database"
+	"github.com/olexsmir/noter/pkg/hash"
+	"github.com/olexsmir/noter/pkg/logger"
+	"github.com/olexsmir/noter/pkg/token"
 )
 
 // @title Noter API

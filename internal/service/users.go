@@ -4,10 +4,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/flof-ik/noter/internal/domain"
-	"github.com/flof-ik/noter/internal/repository"
-	"github.com/flof-ik/noter/pkg/hash"
-	"github.com/flof-ik/noter/pkg/token"
+	"github.com/olexsmir/noter/internal/domain"
+	"github.com/olexsmir/noter/internal/repository"
+	"github.com/olexsmir/noter/pkg/hash"
+	"github.com/olexsmir/noter/pkg/token"
 )
 
 type UsersService struct {

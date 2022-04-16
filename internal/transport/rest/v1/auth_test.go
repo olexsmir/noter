@@ -5,11 +5,11 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/flof-ik/noter/internal/domain"
-	"github.com/flof-ik/noter/internal/service"
-	mock_service "github.com/flof-ik/noter/internal/service/mocks"
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
+	"github.com/olexsmir/noter/internal/domain"
+	"github.com/olexsmir/noter/internal/service"
+	mock_service "github.com/olexsmir/noter/internal/service/mocks"
 	"github.com/stretchr/testify/assert"
 )
 

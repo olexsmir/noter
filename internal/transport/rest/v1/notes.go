@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/flof-ik/noter/internal/domain"
 	"github.com/gin-gonic/gin"
+	"github.com/olexsmir/noter/internal/domain"
 )
 
 func (h *Handler) initNotesRoutes(api *gin.RouterGroup) {

@@ -7,8 +7,8 @@ package mock_service
 import (
 	reflect "reflect"
 
-	domain "github.com/flof-ik/noter/internal/domain"
 	gomock "github.com/golang/mock/gomock"
+	domain "github.com/olexsmir/noter/internal/domain"
 )
 
 // MockUsers is a mock of Users interface.

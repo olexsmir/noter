@@ -3,12 +3,12 @@ package rest
 import (
 	"fmt"
 
-	"github.com/flof-ik/noter/docs"
-	"github.com/flof-ik/noter/internal/config"
-	"github.com/flof-ik/noter/internal/service"
-	v1 "github.com/flof-ik/noter/internal/transport/rest/v1"
-	"github.com/flof-ik/noter/pkg/token"
 	"github.com/gin-gonic/gin"
+	"github.com/olexsmir/noter/docs"
+	"github.com/olexsmir/noter/internal/config"
+	"github.com/olexsmir/noter/internal/service"
+	v1 "github.com/olexsmir/noter/internal/transport/rest/v1"
+	"github.com/olexsmir/noter/pkg/token"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 )

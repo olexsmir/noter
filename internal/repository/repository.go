@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"github.com/flof-ik/noter/internal/domain"
-	"github.com/flof-ik/noter/internal/repository/psql"
 	"github.com/jmoiron/sqlx"
+	"github.com/olexsmir/noter/internal/domain"
+	"github.com/olexsmir/noter/internal/repository/psql"
 )
 
 //go:generate mockgen -source=internal/repository/repository.go -destination=internal/repository/mocks/mock.go

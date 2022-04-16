@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/flof-ik/noter/internal/config"
+	"github.com/olexsmir/noter/internal/config"
 )
 
 type Server struct {

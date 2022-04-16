@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/flof-ik/noter/internal/domain"
-	"github.com/flof-ik/noter/internal/repository"
+	"github.com/olexsmir/noter/internal/domain"
+	"github.com/olexsmir/noter/internal/repository"
 )
 
 type NotebooksService struct {

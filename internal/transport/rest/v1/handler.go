@@ -1,9 +1,9 @@
 package v1
 
 import (
-	"github.com/flof-ik/noter/internal/service"
-	"github.com/flof-ik/noter/pkg/token"
 	"github.com/gin-gonic/gin"
+	"github.com/olexsmir/noter/internal/service"
+	"github.com/olexsmir/noter/pkg/token"
 )
 
 type Handler struct {

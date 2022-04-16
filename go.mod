@@ -1,4 +1,4 @@
-module github.com/flof-ik/noter
+module github.com/olexsmir/noter
 
 go 1.16
 

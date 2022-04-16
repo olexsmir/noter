@@ -1,8 +1,8 @@
 package v1
 
 import (
-	"github.com/flof-ik/noter/pkg/logger"
 	"github.com/gin-gonic/gin"
+	"github.com/olexsmir/noter/pkg/logger"
 )
 
 type response struct {

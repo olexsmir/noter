@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"errors"
 
-	"github.com/flof-ik/noter/internal/domain"
 	"github.com/jmoiron/sqlx"
+	"github.com/olexsmir/noter/internal/domain"
 )
 
 type NotesRepo struct {
