@@ -12,6 +12,5 @@ require (
 	github.com/spf13/viper v1.11.0
 	github.com/stretchr/testify v1.7.1
 	github.com/swaggo/gin-swagger v1.4.3
-	github.com/swaggo/swag v1.8.1
-	golang.org/x/mod v0.5.0 // indirect
+	github.com/swaggo/swag v1.8.2
 )
