@@ -9,8 +9,8 @@ import (
 	"github.com/olexsmir/noter/internal/service"
 	v1 "github.com/olexsmir/noter/internal/transport/rest/v1"
 	"github.com/olexsmir/noter/pkg/token"
+	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 type Handler struct {
@@ -39,7 +39,7 @@ func (h *Handler) InitRoutes(cfg *config.Config) *gin.Engine {
 	}
 
 	if cfg.Environment != config.Prod {
-		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	}
 
 	h.initApi(r)
